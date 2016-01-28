@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/file.png</file>
+        <file>icons/folder.png</file>
+        <file>FilesList.qml</file>
+        <file>MyButton.qml</file>
+        <file>icons/symlink.png</file>
+        <file>icons/folder-grey.png</file>
+        <file>icons/settings.png</file>
+        <file>Settings.qml</file>
+        <file>translations/zh_CN.qm</file>
+        <file>BtmMenu.qml</file>
+        <file>ScrollBar.qml</file>
+        <file>icons/unknown.png</file>
+        <file>Splash.qml</file>
+        <file>main.qml</file>
+        <file>icons/task_ok.png</file>
+        <file>icons/task_error.png</file>
+        <file>icons/task_running.png</file>
+        <file>DeleteDialog.qml</file>
+        <file>RegisterInfo.qml</file>
+        <file>Register.qml</file>
+        <file>CopyDialog.qml</file>
+        <file>RenameDialog.qml</file>
+        <file>NewDialog.qml</file>
+        <file>DecApk.qml</file>
+        <file>RecApk.qml</file>
+        <file>OutPut.qml</file>
+        <file>TasksList.qml</file>
+        <file>icons/task_terminate.png</file>
+        <file>HelpPage.qml</file>
+        <file>SearchDialog.qml</file>
+        <file>icons/itembg.png</file>
+        <file>icons/buttonbg.png</file>
+        <file>icons/bg.png</file>
+        <file>Themes.qml</file>
+        <file>FileDialog.qml</file>
+        <file>MemInfo.qml</file>
+    </qresource>
+</RCC>
