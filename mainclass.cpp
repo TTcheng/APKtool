@@ -19,12 +19,12 @@ MainClass::MainClass(QObject *parent) : QObject(parent), watcher(NULL), searchPr
     refreshCurrentPath();
     connect(this, SIGNAL(copyFinished()), this, SLOT(refreshCurrentPath()));
     connect(this, SIGNAL(taskFinished(QString,QString,QString)), this, SIGNAL(taskModelChanged()));
-    /*
+
     QProcess proc;
     proc.start("id");
     proc.waitForFinished();
     qWarning()<<proc.readAllStandardOutput();
-    */
+
 
 }
 
@@ -133,7 +133,7 @@ void MainClass::singlePress(QString fname)
     //    QStringList currentFilesList = QDir(_currentPath).entryList(currentFilter(),QDir::DirsFirst| QDir::IgnoreCase);
     QFileInfo finfo(_currentPath,fname);
     QString cp = _currentPath;
-    if(!finfo.isReadable()){
+    if(!finfo.isReadable()&&fname!=".." ){
         emit noPerm();
     }
     else if(finfo.isDir()&&finfo.isExecutable()){
@@ -296,12 +296,12 @@ void MainClass::createFSWatcher()
 
 void MainClass::genKey()
 {
-/*
+
     _key = new keyThread;
     connect(_key, SIGNAL(gotKey(QString)), this, SIGNAL(gotKey(QString)));
     connect(_key, SIGNAL(finished()), this, SLOT(deleteKey()));
     _key->start();
-*/
+
 }
 
 void MainClass::deleteKey()

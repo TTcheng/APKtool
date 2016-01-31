@@ -11,6 +11,7 @@
 #include "keyclass.h"
 #include "myfiledialog.h"
 #include "sysinfo.h"
+#include "settings.h"
 
 
 
@@ -38,8 +39,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     MainClass mc;
     KeyClass key;
+    Settings st;
     engine.rootContext()->setContextProperty("mc", &mc);
     engine.rootContext()->setContextProperty("key", &key);
+    engine.rootContext()->setContextProperty("settings", &st);
 //    qmlRegisterType<MainClass>("per.pqy.mc", 1, 0, "MainClass");
 //    qmlRegisterType<KeyClass>("per.pqy.key", 1, 0, "KeyClass");
     qmlRegisterType<MyFileDialog>("per.pqy.filedialog", 1, 0, "MyFileDialog");

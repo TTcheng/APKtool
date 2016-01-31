@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     keythread.cpp \
     themeprovider.cpp \
     myfiledialog.cpp \
-    sysinfo.cpp
+    sysinfo.cpp \
+    settings.cpp
 
 RESOURCES += \
     apktool.qrc
@@ -42,7 +43,8 @@ HEADERS += \
     keythread.h \
     themeprovider.h \
     myfiledialog.h \
-    sysinfo.h
+    sysinfo.h \
+    settings.h
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

@@ -3,7 +3,7 @@ import QtQuick.Controls 1.4
 
 Image {
     id: root
-    property int  fontSize: width/40
+    property int  fontSize: width/40 < 20?20:width/40
     property alias durationText: duration.text
     property alias cmdText: command.text
     property alias outputText: output.text

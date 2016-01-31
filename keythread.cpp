@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <memory.h>
 #include <QTimeZone>
+#include <QDebug>
 
 
 keyThread::keyThread()
@@ -52,9 +53,9 @@ time_t keyThread::getNTPTime()
 
     struct sockaddr_in recv_addr;
     socklen_t recv_addr_len = sizeof(recv_addr);
-
+//qWarning()<<"gg";
     recvfrom(socket_descriptor, buf, 1024, 0, (struct sockaddr*)&recv_addr,&recv_addr_len);
-
+//qWarning()<<"hh";
 
     unsigned long ntpTime = ( buf[40] << 24 ) + ( buf[41] << 16 ) +
                             ( buf[42] << 8  ) +   buf[43];
