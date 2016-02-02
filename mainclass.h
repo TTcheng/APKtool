@@ -1,4 +1,4 @@
- #ifndef MAINCLASS_H
+#ifndef MAINCLASS_H
 #define MAINCLASS_H
 
 #include <QObject>
@@ -23,7 +23,7 @@ class MainClass : public QObject
     Q_PROPERTY(QList<QObject*>  fileModel READ fileModel  NOTIFY fileModelChanged)
     Q_PROPERTY(QList<QObject*>  taskModel READ taskModel  NOTIFY taskModelChanged)
     Q_PROPERTY(QList<QObject*>  searchModel READ searchModel  NOTIFY searchModelChanged)
-    Q_PROPERTY(bool noItemSelected READ noItemSelected CONSTANT)
+//    Q_PROPERTY(bool noItemSelected READ noItemSelected CONSTANT)
     Q_PROPERTY(int taskNum READ taskNum CONSTANT)
     Q_PROPERTY(QString aapt READ aapt CONSTANT)
 
@@ -33,11 +33,11 @@ public:
     ~MainClass();
     QString currentPath(){return _currentPath;}
     QString aapt(){return _aapt;}
-    QStringList filesInfoList();
+//    QStringList filesInfoList();
     QList<QObject*> fileModel(){ return fList; }
     QList<QObject*> taskModel(){ return tList; }
     QList<QObject*> searchModel(){ return sList; }
-    bool noItemSelected();
+
     int taskNum();
 
 signals:
@@ -60,9 +60,8 @@ signals:
     void themeChanged();
 
 public:
-   Q_INVOKABLE void singlePress(QString fname);
-   Q_INVOKABLE void longPress(QString fname);
-   Q_INVOKABLE
+   Q_INVOKABLE void singlePress(int index);
+   Q_INVOKABLE void longPress(int index);
    Q_INVOKABLE void selectAll();
    Q_INVOKABLE void reverseSelect();
    Q_INVOKABLE void unselectAll();
@@ -72,11 +71,12 @@ public:
    Q_INVOKABLE bool copySelected(bool cover);
    Q_INVOKABLE bool cutSelected(bool cover);
    Q_INVOKABLE void rename(QString oldName, QString newName);
-//    QString getTxtContent(QString fileName);
+   Q_INVOKABLE bool noItemSelected();
+   Q_INVOKABLE bool hasRoot();
 
    Q_INVOKABLE void createNewFile(QString name, bool type);
-   Q_INVOKABLE void decApk(QString apkFile, QString options);
-   Q_INVOKABLE void recApk(QString sourceDir, QString options, QString aapt);
+   Q_INVOKABLE void decApk(QString apkFile, QString options, bool rootPerm = false);
+   Q_INVOKABLE void recApk(QString sourceDir, QString options, QString aapt, bool rootPerm = false);
    Q_INVOKABLE void signApk(QString apkFile);
    Q_INVOKABLE void openFile(QString file);
    Q_INVOKABLE void importFramework(QString apkFile);
@@ -98,10 +98,10 @@ private slots:
     void refreshCurrentPath();
 
 private:
-    QString _currentPath, _oldPath;
-    QString qtPerm2unix(QFile::Permissions p);
-    QString qtFileSize(qint64 s);
-    QString qtDate(QDateTime d);
+    QString _currentPath, _oldPath, _shell;
+//    QString qtPerm2unix(QFile::Permissions p);
+//    QString qtFileSize(qint64 s);
+//    QString qtDate(QDateTime d);
     QList<QObject*> fList; //files list
     QList<QObject*> tList; //tasks list
     QList<QObject*> sList; //search files list
@@ -110,7 +110,7 @@ private:
     keyThread *_key;
     QString _selectedFiles;
     QString _aapt;
-    QProcess *searchProc;
+    QProcess *searchProc, listProc;
     inline QDir::Filters currentFilter(){
         if(QDir(_currentPath).isRoot())
                 return QDir::NoDotAndDotDot|QDir::AllEntries|QDir::Hidden;

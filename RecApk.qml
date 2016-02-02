@@ -6,7 +6,7 @@ import QtQuick.Controls.Styles 1.4
 Item {
     id: root
     signal nobtn
-    signal recapk(string options, string aapt)
+    signal recapk(string options, string aapt, bool rootPerm)
     property int itemHeightMargin: height/20
     property int  fontSize: width/40
 
@@ -132,7 +132,7 @@ Item {
                 }
                 opt += textField1.getText(0, textField1.length);
                 opt += " ";
-                root.recapk(opt, tabPositionGroup.current.text);
+                root.recapk(opt, tabPositionGroup.current.text, checkBox3.checked);
             }
         }
 
@@ -168,6 +168,16 @@ Item {
             Component.onCompleted: checked = mc.aapt=== text
         }
         ExclusiveGroup { id: tabPositionGroup }
+
+        CheckBox {
+            id: checkBox3
+            text: qsTr("run as root")
+            anchors.top: textField1.bottom
+            anchors.topMargin:  root.itemHeightMargin
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            enabled: mc.hasRoot()
+        }
 
     }
 

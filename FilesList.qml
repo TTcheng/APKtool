@@ -12,12 +12,12 @@ ApplicationWindow {
     title: qsTr("Apktool")
     onClosing: {
         close.accepted = false;
-        if(dialogLoader.source!=""){
+        if(dialogLoader.source!=""&&dialogLoader.source!="qrc:/CopyDialog.qml"){
             hideDialogLoader();
         }
         else if(mc.currentPath != "/"){
-            mc.singlePress("..");
-        }               
+            mc.singlePress(0);
+        }
     }
 
     function hideAll(){
@@ -117,7 +117,7 @@ ApplicationWindow {
             settings.opacity = 1;
             settings.x = root.width/2;
             settings.width = root.width/2-seticon.width;
-            settings.height = root.height*4/15;
+            settings.height = root.height*5/15;
         }
         else{
             settings.x = seticon.x;
@@ -150,8 +150,8 @@ ApplicationWindow {
         var _new = 11;
         var _edit = 12;
         if(num===_copy){
-           mc.saveSelected();
-           dialogLoader.setSource("qrc:/CopyDialog.qml");
+            mc.saveSelected();
+            dialogLoader.setSource("qrc:/CopyDialog.qml");
         }
         else if(num ===_delete){
             dialogLoader.setSource("qrc:/DeleteDialog.qml");
@@ -184,9 +184,9 @@ ApplicationWindow {
         }
 
         else if(num ===_edit){
-//            dialogLoader.setSource("qrc:/Editor.qml");
+            //            dialogLoader.setSource("qrc:/Editor.qml");
             //mainwindow.parent.root.visible = false;
-//            mc.edit(dialogLoader.origName);
+            //            mc.edit(dialogLoader.origName);
 
         }
         else if(num===_search){
@@ -213,12 +213,16 @@ ApplicationWindow {
             }
         }
         else if(btn===3){
-                dialogLoader.setSource("qrc:/HelpPage.qml");
+            dialogLoader.setSource("qrc:/HelpPage.qml");
         }
         else if(btn===4){
-               dialogLoader.setSource("qrc:/Themes.qml");
+            dialogLoader.setSource("qrc:/Themes.qml");
         }
         else if(btn===5){
+            dialogLoader.setSource("qrc:/DataMove.qml");
+        }
+
+        else if(btn===6){
             Qt.quit();
         }
 
@@ -226,10 +230,10 @@ ApplicationWindow {
 
     function registerApp(regKey){
         if(regKey.length!==12){
-           showMsg(qsTr("Invalid length of your key!"));
+            showMsg(qsTr("Invalid length of your key!"));
         }
         else{
-           key.verifyKey(regKey);
+            key.verifyKey(regKey);
         }
     }
 
@@ -275,22 +279,27 @@ ApplicationWindow {
         hideDialogLoader();
     }
 
-    function decApk(name, options){
+    function decApk(name, options, rootPerm){
         hideDialogLoader();
         showMsg(qsTr("Added to task list!"));
-        mc.decApk(name, options);
+        mc.decApk(name, options, rootPerm);
     }
 
-    function recApk(name, options, aapt){
+    function recApk(name, options, aapt, rootPerm){
         hideDialogLoader();
         showMsg(qsTr("Added to task list!"));
-        mc.recApk(name, options, aapt);
+        mc.recApk(name, options, aapt, rootPerm);
     }
 
     function createOutput(cmd, output, duration){
         var compoment = Qt.createComponent("qrc:/OutPut.qml");
         var obj = compoment.createObject(dialogLoader, {"x":0, "y":100, "width": mainwindow.width, "height": mainwindow.height-200,
                                              "cmdText": cmd, "outputText": output, "durationText": qsTr("cost time: %1").arg(duration)});
+    }
+    function bugReport(){
+        hideDialogLoader();
+        if(!key.isRegisterd())
+            createOutput("", qsTr("This page is showed because of register bug.\n%1").arg(key.genBugMsg()),"");
     }
 
 
@@ -314,7 +323,7 @@ ApplicationWindow {
         onCopyFinished:  showMsg(qsTr("Files has been copied!"))
         onCutFinished:  showMsg(qsTr("Files has been cut!"))
         onSameNameExist: showMsg(qsTr("File with same name exists!"))
-//        onEditorClosed: dialogLoader.setSource("")
+        //        onEditorClosed: dialogLoader.setSource("")
         onTaskFinished: createOutput(cmd, output, duration)
         onNoBootClass: showMsg(qsTr("Copy boot.oat file to current path first, please. "))
         onCombineHelp: showMsg(qsTr("Unsupported operation."))
@@ -331,6 +340,9 @@ ApplicationWindow {
         }
         onVerifyTimeout: {
             showMsg(qsTr("Verify timeout! Please try again."));
+        }
+        onRegisterBug: {
+            bugReport();
         }
     }
 
@@ -351,8 +363,9 @@ ApplicationWindow {
         onCutbtn: cutFiles(cover);
         onRenamebtn: renameFile(dialogLoader.origName, newName);
         onNewfilebtn: newFile(newName, type);
-        onDecapk: decApk(dialogLoader.origName, options);
-        onRecapk: recApk(dialogLoader.origName, options, aapt);
+        onDecapk: decApk(dialogLoader.origName, options, rootPerm);
+        onRecapk: recApk(dialogLoader.origName, options, aapt, rootPerm);
+        //        onBugreport: bugReport();
     }
 
     Rectangle {
@@ -458,7 +471,7 @@ ApplicationWindow {
     Image {
         id: root
         anchors.fill: parent
-//        color: "#dddddd"
+        //        color: "#dddddd"
         source: "image://ThemeProvider/bg"
         opacity: 0.7
         property real scrollPos: 0
@@ -467,16 +480,16 @@ ApplicationWindow {
 
         ListView {
             id: list
-           anchors.fill: parent
-           flickDeceleration: 3000
-           maximumFlickVelocity: 8000
-           spacing: 0
-           clip: true
-           onModelChanged: list.contentY = root.scrollPos;
-           onFlickEnded: root.scrollPos = contentY;
+            anchors.fill: parent
+            flickDeceleration: 3000
+            maximumFlickVelocity: 8000
+            spacing: 0
+            clip: true
+            onModelChanged: list.contentY = root.scrollPos;
+            onFlickEnded: root.scrollPos = contentY;
 
-           model: mc.fileModel
-           delegate: Image {
+            model: mc.fileModel
+            delegate: Image {
                 id: listItem
                 height: root.height/15
                 width: root.width
@@ -487,85 +500,85 @@ ApplicationWindow {
                 property alias checked: checkItem.checked
                 MouseArea {
                     id:mouseArea
-                  anchors.fill: parent
-                  onClicked: { mc.unselectAll(); model.modelData.setChecked(true); dialogLoader.origName = model.modelData.name; mc.singlePress(model.modelData.name);}
-                  onPressAndHold: { mc.unselectAll(); model.modelData.setChecked(true); dialogLoader.origName = model.modelData.name; mc.longPress(model.modelData.name); }
+                    anchors.fill: parent
+                    onClicked: { mc.unselectAll(); model.modelData.setChecked(true); dialogLoader.origName = model.modelData.name; mc.singlePress(index);}
+                    onPressAndHold: { mc.unselectAll(); model.modelData.setChecked(true); dialogLoader.origName = model.modelData.name; mc.longPress(index); }
                 }
-//                 color: "#88ffffff"
-//                 gradient: Gradient {
-//                     GradientStop { position: 0.0; color: "#eeeeee" }
-//                     GradientStop { position: 0.5; color: "#f3f3f3" }
-//                     GradientStop { position: 1.0; color: "#eeeeee" }
-//                 }
+                //                 color: "#88ffffff"
+                //                 gradient: Gradient {
+                //                     GradientStop { position: 0.0; color: "#eeeeee" }
+                //                     GradientStop { position: 0.5; color: "#f3f3f3" }
+                //                     GradientStop { position: 1.0; color: "#eeeeee" }
+                //                 }
 
 
-                 Image {
-                     id: icon
-                     anchors.left: parent.left
-                     anchors.top: parent.top
-                     anchors.bottom: parent.bottom
-                     anchors.margins: listItem.height/10
-                     width: height
-                     asynchronous: true
-                     cache: false
-                     source: "image://FileImageProvider/"+mc.currentPath+"/"+model.modelData.name
-                 }
-                 CheckBox {
-                     id: checkItem                    
-                     anchors.right: parent.right
-                     anchors.top: parent.top
-                     anchors.bottom: parent.bottom
-                     anchors.topMargin: listItem.height/10
-                     anchors.bottomMargin: listItem.height/10
+                Image {
+                    id: icon
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.margins: listItem.height/10
+                    width: height
+                    asynchronous: true
+                    cache: false
+                    source: "image://FileImageProvider/"+mc.currentPath+model.modelData.name
+                }
+                CheckBox {
+                    id: checkItem
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.topMargin: listItem.height/10
+                    anchors.bottomMargin: listItem.height/10
 
-                     width: height
-                     Component.onCompleted: checked=model.modelData.checked
-                     style: CheckBoxStyle {
-                             indicator: Rectangle {
-                                     implicitWidth: checkItem.width/2
-                                     implicitHeight: checkItem.height/2
-                                     radius: 32
-                                     color: "#00000000"
-                                     border.color: control.activeFocus ? "darkblue" : "black"
-                                     border.width: 1
-                                     Rectangle {
-                                         visible: control.checked
-                                         color: "#555"
-                                         border.color: "#333"
-                                         radius: 32
-//                                         anchors.margins: 4
-                                         anchors.fill: parent
-                                     }
-                             }
-                         }
-                     onClicked: {
-                         model.modelData.setChecked(checked);
-                         showselectMenu();
-                     }
-                     Connections {
-                         target: model.modelData
-                         onCheckedChanged: checkItem.checked = model.modelData.checked
-                     }
-                 }
+                    width: height
+                    Component.onCompleted: checked=model.modelData.checked
+                    style: CheckBoxStyle {
+                        indicator: Rectangle {
+                            implicitWidth: checkItem.width/2
+                            implicitHeight: checkItem.height/2
+                            radius: 32
+                            color: "#00000000"
+                            border.color: control.activeFocus ? "darkblue" : "black"
+                            border.width: 1
+                            Rectangle {
+                                visible: control.checked
+                                color: "#555"
+                                border.color: "#333"
+                                radius: 32
+                                //                                         anchors.margins: 4
+                                anchors.fill: parent
+                            }
+                        }
+                    }
+                    onClicked: {
+                        model.modelData.setChecked(checked);
+                        showselectMenu();
+                    }
+                    Connections {
+                        target: model.modelData
+                        onCheckedChanged: checkItem.checked = model.modelData.checked
+                    }
+                }
 
-                 Text {
-                     id: t1
-                     text: model.modelData.name
-                     color: "black"
-                     height: parent.height*2/3
-                     font.pixelSize: height*4/7
-                     anchors.left: icon.right
-                 }
-                 Text {
-                     anchors.top: t1.bottom
-                     anchors.bottom: parent.bottom
-                     anchors.left: icon.right
-                     text: model.modelData.info
-                     color: "black"
-                     height: parent.height*1/3
-                     font.pixelSize: height*5/7
+                Text {
+                    id: t1
+                    text: model.modelData.name
+                    color: "black"
+                    height: parent.height*2/3
+                    font.pixelSize: height*4/7
+                    anchors.left: icon.right
+                }
+                Text {
+                    anchors.top: t1.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.left: icon.right
+                    text: model.modelData.info
+                    color: "black"
+                    height: parent.height*1/3
+                    font.pixelSize: height*5/7
 
-                 }
+                }
             }
         }
         ScrollBar {
@@ -628,7 +641,7 @@ ApplicationWindow {
             property real btnHei: (parent.height-3)/4
             MyButton {
                 id: button1
-                radius: 0
+
                 text: qsTr("Select All")
                 width: parent.btnWid
                 height: parent.btnHei
@@ -637,15 +650,15 @@ ApplicationWindow {
 
             MyButton {
                 id: button2
-                radius: 0
+
                 text: qsTr("Reverse Selection")
                 width: parent.btnWid
-                height: parent.btnHei            
+                height: parent.btnHei
                 onClicked: mc.reverseSelect()
             }
             MyButton {
                 id: button4
-                radius: 0
+
                 text: qsTr("Combine")
                 width: parent.btnWid
                 height: parent.btnHei
@@ -654,14 +667,14 @@ ApplicationWindow {
 
             MyButton {
                 id: button3
-                radius: 0
+
                 text: qsTr("Finish Selection")
                 width: parent.btnWid
                 height: parent.btnHei
                 onClicked: {
                     hideselectMenu();
-                    if(!mc.noItemSelected)
-                    showbtmMenu("MultiSelect");
+                    if(!mc.noItemSelected())
+                        showbtmMenu("MultiSelect");
                 }
             }
 

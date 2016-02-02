@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 Item {
     id: root
     signal nobtn
-    signal decapk(string options)
+    signal decapk(string options, bool rootPerm)
     property int itemHeightMargin: height/20
     property int  fontSize: width/40
     MouseArea {
@@ -191,8 +191,18 @@ Item {
                     opt += "-m ";
                 }
                 opt += textField1.getText(0, textField1.length);
-                root.decapk(opt);
+                root.decapk(opt, checkBox4.checked);
             }
+        }
+
+        CheckBox {
+            id: checkBox4
+            text: qsTr("run as root")
+            anchors.top: textField1.bottom
+            anchors.topMargin: root.itemHeightMargin
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            enabled: mc.hasRoot()
         }
     }
 

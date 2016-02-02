@@ -91,7 +91,7 @@ ApplicationWindow  {
 
             Timer {
                 id: delayTimer
-                interval: win.count*1000;
+                interval: win.count*1000-1000;
                 running: true;
                 onTriggered: win.toMain();
             }

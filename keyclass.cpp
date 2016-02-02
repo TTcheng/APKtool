@@ -38,9 +38,9 @@ bool KeyClass::isRegisterd()
     }
 
     quint64 key = userkey.toLongLong() - getuid();
-    const char *keyfile = (QDir::homePath()+"/userkey").toStdString().c_str();
+    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
     struct stat st;
-    ::stat(keyfile, &st);
+    stat(keyfile, &st);
     quint64 validkey = st.st_mtime;
     return key==validkey;
 }
@@ -78,7 +78,7 @@ void KeyClass::_verifyKey(QString _validKey)
         return;
     }
     for(int i=userKey.length()-2;i>0;i-=3){
-//        qDebug()<<userKey;
+        //        qDebug()<<userKey;
         userKey.remove(i, 1);
     }
     _user = userKey.toLongLong();
@@ -89,7 +89,12 @@ void KeyClass::_verifyKey(QString _validKey)
         QSettings settings;
         settings.setValue("key/userkey", _userKey);
         createKeyFile();
-        emit verifySuccess();
+        if(isRegisterd()||_secondVerify())
+            emit verifySuccess();
+        else{
+            emit registerBug();
+            return;
+        }
 
     }
     else
@@ -99,15 +104,15 @@ void KeyClass::_verifyKey(QString _validKey)
 void KeyClass::createKeyFile()
 {
     QSettings settings;
-    const char *keyfile = (QDir::homePath()+"/userkey").toStdString().c_str();
+    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
     struct stat st;
-    FILE *fp = ::fopen(keyfile, "w");
+    FILE *fp = fopen(keyfile, "w");
     qsrand(time(NULL));
     for(int i=0;i<32;i++){
-        ::fputc(qrand()%128, fp);
+        fputc(qrand()%128, fp);
     }
     fstat(fileno(fp), &st);
-    ::fclose(fp);
+    fclose(fp);
     QString cryptKey = QString::number(st.st_mtime + getuid());
     qsrand(time(NULL));
 
@@ -133,4 +138,60 @@ int KeyClass::runCount()
         return settings.value("user/runCount", 15).toUInt();
     else
         return 15;
+}
+
+QString KeyClass::genBugMsg()
+{
+    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
+    struct stat st;
+    QString userkey = userKey(true);
+    for(int i=userkey.length()-2;i>0;i-=3){
+        int j = userkey[i].toLatin1()-'0';
+        userkey.remove(i, 1);
+        if(j%2){
+            userkey[i-1] = (userkey[i-1].toLatin1() - '0' -j +10)%10 +'0';
+            userkey[i] = (userkey[i].toLatin1() - '0' -j +10)%10 +'0';
+        }else{
+            userkey[i] = (userkey[i].toLatin1() - '0' +j )%10 +'0';
+            userkey[i-1] = (userkey[i-1].toLatin1() - '0' +j)%10 +'0';
+        }
+    }
+    userkey+="\n";
+    if(!stat(keyfile, &st)){
+        userkey+= QString::number(st.st_mtime + getuid());
+    }
+    else{
+        userkey+=("xxxxxxxxxxxx");
+    }
+    userkey+="\n";
+    userkey+="home:"+QDir::homePath();
+    return userkey;
+
+}
+
+bool KeyClass::_secondVerify()
+{
+    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
+    struct stat st;
+    if(stat(keyfile, &st))
+        return false;
+    QString cryptKey = QString::number(st.st_mtime + getuid());
+    qsrand(time(NULL));
+
+    for(int i=cryptKey.length()-1; i>0;i-=2){
+        int j = qrand()%10;
+        if(j%2){
+            cryptKey[i-1] =  '0' + (cryptKey[i-1].toLatin1() - '0' + j)%10;
+            cryptKey[i] =  '0' + (cryptKey[i].toLatin1() - '0' + j)%10;
+        }else{
+            cryptKey[i-1] =  '0' + (cryptKey[i-1].toLatin1() - '0' - j +10)%10;
+            cryptKey[i] =  '0' + (cryptKey[i].toLatin1() - '0' -  j + 10)%10;
+        }
+        cryptKey.insert(i, '0'+ j);
+    }
+    QSettings settings;
+    settings.setValue("key/cryptkey", cryptKey);
+    settings.sync();
+    return isRegisterd();
+
 }

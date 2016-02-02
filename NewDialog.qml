@@ -15,7 +15,6 @@ Item {
         height: parent.height/16
         width: parent.width*5/7
         anchors.centerIn: parent
-        radius: 128
         color: "#99ffffff"
         MyButton {
             id: fileBtn

@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.4
 Item {
     id: root
     signal rgst(string regKey)
+    //    signal bugreport
     signal nobtn
     Component.onCompleted: textfield.forceActiveFocus()
     MouseArea {
@@ -18,24 +19,24 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: parent.height/10
         anchors.horizontalCenter: parent.horizontalCenter
-//        inputMask: "nnnnnnnnnnnnnnn"
+        //        inputMask: "nnnnnnnnnnnnnnn"
 
-            id: textfield
-            placeholderText: qsTr("Input your key, please.")
-            font.pixelSize: parent.width/20
-//            textColor: "orange"
-            horizontalAlignment: TextEdit.AlignHCenter
-            style: TextFieldStyle {
-                    textColor: "orange"
-                    background: Rectangle {
-                        radius: 2
-                        opacity: 0.1
-                        implicitWidth: 100
-                        implicitHeight: 24
-                        border.color: "#333"
-                        border.width: 1
-                    }
-                }
+        id: textfield
+        placeholderText: qsTr("Input your key, please.")
+        font.pixelSize: parent.width/20
+        //            textColor: "orange"
+        horizontalAlignment: TextEdit.AlignHCenter
+        style: TextFieldStyle {
+            textColor: "orange"
+            background: Rectangle {
+                radius: 2
+                opacity: 0.1
+                implicitWidth: 100
+                implicitHeight: 24
+                border.color: "#333"
+                border.width: 1
+            }
+        }
 
 
     }
@@ -49,28 +50,27 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: textfield.bottom
         anchors.topMargin:  parent.height/10
-        radius: 32
-//        antialiasing: false
+        //        antialiasing: false
         color: "#88ffffff"
         MyButton {
-                        id: yesBtn
-                        radius: 32
-                        anchors.left: parent.left
-                        width: parent.width/3
-                        text: qsTr("Register")
-                        anchors.bottom: parent.bottom
-                        anchors.top: parent.top
-                        onClicked: root.rgst(textfield.getText(0,12))
-                    }
+            id: yesBtn
+
+            anchors.left: parent.left
+            width: parent.width/3
+            text: qsTr("Register")
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            onClicked: root.rgst(textfield.getText(0,12))
+        }
         MyButton {
             id: noBtn
-            radius: 32
+
             anchors.right: parent.right
-             width: parent.width/3
-             text: qsTr("Cancel")
-             anchors.bottom: parent.bottom
-             anchors.top: parent.top
-             onClicked: root.nobtn()
+            width: parent.width/3
+            text: qsTr("Cancel")
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            onClicked: root.nobtn()
         }
     }
 

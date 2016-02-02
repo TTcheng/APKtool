@@ -57,11 +57,10 @@ QPixmap FileImageProvider::requestPixmap(const QString& id, QSize* size, const Q
          }else pixmap.load(":/icons/file.png");
     }
     if(pixmap.isNull())
-        pixmap.load(":/icons/unkown.png");
+        pixmap.load(":/icons/unknown.png");
     if(f.isSymLink()){
         QPainter painter(&pixmap);
         painter.drawPixmap(0, 0, pixmap.width()/2, pixmap.height()/2, QPixmap(":/icons/symlink.png"));
-//        painter.end();
     }
     return pixmap;
 }

@@ -13,7 +13,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: height
-        radius: 128
+
         color: "#99ffffff"
         MyButton {
             id: cpBtn

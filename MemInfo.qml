@@ -7,7 +7,7 @@ Item {
     property alias rectHei: rectangle2.height
     Rectangle {
         id: rectangle1
-        opacity: 0.4
+        opacity: 0.2
 
         anchors.top: text1.bottom
         anchors.topMargin: 0
@@ -26,7 +26,7 @@ Item {
             id: rectangle2
             y: 198
             height: 261
-            opacity: 1
+            opacity: 0.7
 
             anchors.right: parent.right
             anchors.rightMargin: 0
@@ -35,21 +35,8 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             gradient: Gradient {
-                GradientStop { position: 0.0; color: Qt.lighter("gray");}
+                GradientStop { position: 0.0; color: "#ffffff" }
                 GradientStop { position: 1.0; color: "gray";}
-            }
-
-            Text {
-                id: text2
-                x: 0
-                text: "Text"
-                anchors.top: parent.top
-                anchors.topMargin: 5
-                opacity: 1
-                anchors.left: parent.left
-                anchors.leftMargin: 0
-                textFormat: Text.PlainText
-                //            font.pixelSize: 12
             }
         }
     }
@@ -64,6 +51,20 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 0
         //        font.pixelSize: 12
+    }
+
+    Text {
+        id: text2
+        x: 0
+        y: 21
+        text: "Text"
+        anchors.top: rectangle1.top
+        anchors.topMargin: rectangle1.height - rectangle2.height
+        opacity: 0.4
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        textFormat: Text.PlainText
+        //            font.pixelSize: 12
     }
 
 }

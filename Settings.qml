@@ -16,37 +16,46 @@ Rectangle {
         MyButton {
             width: parent.btnWid
             height: parent.btnHei
-            radius: 0
+
             text: qsTr("Task")
             onClicked: setting.clicked(1)
         }
         MyButton {
             width: parent.btnWid
             height: parent.btnHei
-            radius: 0
+
             text: qsTr("Register")
             onClicked:setting.clicked(2)
         }
         MyButton {
             width: parent.btnWid
             height: parent.btnHei
-            radius: 0
+
             text: qsTr("Help")
             onClicked:setting.clicked(3)
         }
         MyButton {
             width: parent.btnWid
             height: parent.btnHei
-            radius: 0
+
             text: qsTr("Theme")
             onClicked:setting.clicked(4)
         }
+        /*
         MyButton {
             width: parent.btnWid
             height: parent.btnHei
-            radius: 0
+
+            text: qsTr("Data Movement")
+            onClicked:setting.clicked(5)
+        }
+        */
+        MyButton {
+            width: parent.btnWid
+            height: parent.btnHei
+
             text: qsTr("Quit")
-            onClicked: setting.clicked(5)
+            onClicked: setting.clicked(6)
         }
     }
 

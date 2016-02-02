@@ -20,7 +20,7 @@ class TaskModelItem :public QObject
 
 public:
 
-    TaskModelItem(const QString &cmd):_cmd(cmd),  _process(NULL), _state("task_running"){
+    TaskModelItem(const QString &cmd, const QString shell = "sh"):_shell(shell), _cmd(cmd),  _process(NULL), _state("task_running"){
         /*
         _process = new QProcess;
         _process->setProcessChannelMode(QProcess::MergedChannels);
@@ -52,7 +52,7 @@ public:
         connect(&_process, SIGNAL(started()),this, SIGNAL(newTaskRunning()));
         connect(&_process,SIGNAL(finished(int)),this, SLOT(finish_work(int)));
         time.start();
-        _process.start("sh",QStringList()<<"-c"<<_cmd);
+        _process.start(_shell,QStringList()<<"-c"<<_cmd);
     }
 
     Q_INVOKABLE void stopTask(){
@@ -83,7 +83,7 @@ private slots:
         emit stateChanged();
     }
 private:
-    QString _cmd;
+    QString _cmd, _shell;
     QProcess _process;
     QString _state; //0: task_running; 1: task_ok; 2: task_error; 3: task_terminate
     QByteArray _output;

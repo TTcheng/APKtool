@@ -2,9 +2,9 @@
 #include <QDir>
 #include <QFile>
 #include <QThread>
-//#include <QDebug>
+#include <QDebug>
 #include <QSettings>
-//#include <QApplication>
+#include <QStringList>
 
 #if defined(Q_OS_ANDROID)
 #include <QtAndroid>
@@ -16,15 +16,25 @@ MainClass::MainClass(QObject *parent) : QObject(parent), watcher(NULL), searchPr
     QSettings settings;
     _currentPath = settings.value("user/lastpath", "/").toString();
     _aapt = settings.value("user/aapt","aapt6.0").toString();
+    if(QFileInfo("/system/bin/su").exists()||QFileInfo("/system/xbin/su").exists()||QFileInfo("/bin/su").exists())
+        _shell = "su";
+    else
+        _shell = "sh";
+    QProcessEnvironment env = listProc.processEnvironment();
+    QString path = env.value("PATH");
+    env.insert("PATH", "/data/data/per.pqy.apktool/apktool/openjdk/bin:"+path);
+    listProc.setProcessEnvironment(env);
     refreshCurrentPath();
     connect(this, SIGNAL(copyFinished()), this, SLOT(refreshCurrentPath()));
-    connect(this, SIGNAL(taskFinished(QString,QString,QString)), this, SIGNAL(taskModelChanged()));
-
+    connect(this, SIGNAL(deleteFinished()), this, SLOT(refreshCurrentPath()));
+    connect(this, SIGNAL(cutFinished()), this, SLOT(refreshCurrentPath()));
+    connect(this, SIGNAL(taskFinished(QString,QString,QString)), this, SLOT(refreshCurrentPath()));
+/*
     QProcess proc;
     proc.start("id");
     proc.waitForFinished();
     qWarning()<<proc.readAllStandardOutput();
-
+*/
 
 }
 
@@ -37,8 +47,49 @@ MainClass::~MainClass()
 
 void MainClass::refreshCurrentPath()
 {
+    if(listProc.state()==QProcess::Running)
+        return;
+    listProc.start(_shell, QStringList()<<"-c"<<"ls -Agoh --full-time  --color=never "+_currentPath);
+    listProc.waitForFinished();
+    if(listProc.exitCode()==2){
+        _currentPath = "/";
+        listProc.start(_shell, QStringList()<<"-c"<<"ls -Agoh --full-time  --color=never "+_currentPath);
+        listProc.waitForFinished();
+    }
+
     qDeleteAll(fList);
     fList.clear();
+    QByteArray output = listProc.readAllStandardOutput();
+    QTextStream out(&output);
+    QString line, filename, fileinfo;
+    QStringList splitStr;
+    if(_currentPath!="/")
+        fList.append(new FileModelItem("..", " "));
+    line = out.readLine();
+    while(!out.atEnd()){
+        line = out.readLine();
+        splitStr = line.split(QRegExp("\\s+"),  QString::SkipEmptyParts);
+        if(splitStr.count()<1)
+            continue;
+        if(splitStr[0].startsWith('-')){
+            filename = splitStr[6];
+            fileinfo =splitStr[0] + "    " + splitStr[2] + "    "+splitStr[3]+ "  "+splitStr[4].left(8) ;
+        }
+        else if(splitStr[0].startsWith('d')){
+            filename = splitStr[6];
+            fileinfo =splitStr[0] + "            "+splitStr[3]+ "  "+splitStr[4].left(8) ;
+        }
+        else if(splitStr[0].startsWith('l')){
+            filename = splitStr[6];
+            fileinfo =splitStr[0] + "            "+splitStr[3]+ "  "+splitStr[4].left(8) +"  "+splitStr[7]+ splitStr[8];
+        }
+        else if(splitStr[0].startsWith('b')||splitStr[0].startsWith('c')){
+            filename = splitStr[7];
+            fileinfo = splitStr[0] + "    " + splitStr[2] +splitStr[3]+ "    "+splitStr[4]+ "  "+splitStr[5].left(8) ;
+        }
+        fList.append(new FileModelItem(filename, fileinfo));
+    }
+    /*
     QDir parent(_currentPath);
     if(!parent.exists())
         _currentPath = "/";
@@ -46,10 +97,11 @@ void MainClass::refreshCurrentPath()
     QStringList currentFilesInfoList = filesInfoList();
     for(int i=0;i<currentFilesList.count();i++)
         fList.append(new FileModelItem(currentFilesList[i],currentFilesInfoList[i]));
-    createFSWatcher();
+*/
+//    createFSWatcher();
     emit fileModelChanged();
 }
-
+/*
 QStringList MainClass::filesInfoList()
 {
     QFileInfoList infoList = QDir(_currentPath).entryInfoList(currentFilter(),QDir::DirsFirst| QDir::IgnoreCase);
@@ -121,43 +173,68 @@ QString MainClass::qtDate(QDateTime d)
 {
     return d.toString("hh:mm:ss    dd/MM/yyyy");
 }
-
-void MainClass::singlePress(QString fname)
+*/
+void MainClass::singlePress(int index)
 {
-    QDir parent(_currentPath);
-    if(!parent.exists()){
-        _currentPath = "/";
-        refreshCurrentPath();
-        return;
-    }
-    //    QStringList currentFilesList = QDir(_currentPath).entryList(currentFilter(),QDir::DirsFirst| QDir::IgnoreCase);
-    QFileInfo finfo(_currentPath,fname);
-    QString cp = _currentPath;
-    if(!finfo.isReadable()&&fname!=".." ){
-        emit noPerm();
-    }
-    else if(finfo.isDir()&&finfo.isExecutable()){
-        cp += "/";
-        cp +=fname;
-        _currentPath = QDir(cp).absolutePath();
-        _currentPath = QDir(_currentPath).path();
-        QStringList currentFilesList = QDir(_currentPath).entryList(currentFilter(),QDir::DirsFirst| QDir::IgnoreCase);
-        QStringList currentFilesInfoList = filesInfoList();
-        qDeleteAll(fList);
-        fList.clear();
-        for(int i=0;i<currentFilesList.count();i++)
-            fList.append(new FileModelItem(currentFilesList[i],currentFilesInfoList[i]));
-        createFSWatcher();
-        emit fileModelChanged();
 
+    FileModelItem *item = qobject_cast<FileModelItem *>(fList[index]);
+    if(index==0&&_currentPath!="/"){
+        QDir dir(_currentPath);
+        dir.cdUp();
+        _currentPath = dir.absolutePath();
+        if(!_currentPath.endsWith('/')){
+            _currentPath+="/";
+        }
+        refreshCurrentPath();
     }
-    else if(finfo.isFile()){
-        emit clickFile(finfo.suffix());
+    else if(item->info().startsWith('d')){
+        QFileInfo finfo(_currentPath, item->name());
+        if(_shell=="su"||(finfo.isReadable()&&finfo.isExecutable())){
+            _currentPath +=  item->name() + "/";
+            refreshCurrentPath();
+        }
+    }
+    else if(item->info().startsWith('-')){
+        emit clickFile(QFileInfo( item->name()).suffix());
+    }
+    else if(item->info().startsWith('l')){
+        if(listProc.state()==QProcess::Running)
+            return;
+
+        listProc.start(_shell, QStringList()<<"-c"<<"ls -hHd --full-time --color=never "+_currentPath+ item->name());
+        listProc.waitForFinished();
+        if(listProc.readAllStandardOutput().startsWith('d')){
+            _currentPath +=  item->name() + "/";
+            refreshCurrentPath();
+        }
+        else{
+            emit clickFile(QFileInfo( item->name()).suffix());
+        }
     }
 }
 
-void MainClass::longPress(QString fname)
+void MainClass::longPress(int index)
 {
+    FileModelItem *item = qobject_cast<FileModelItem *>(fList[index]);
+    if(item->name()==".." || item->info().startsWith('d')){
+         emit clickDir();
+    }
+    else if(item->info().startsWith('-')){
+        emit clickFile(QFileInfo( item->name()).suffix());
+    }
+    else if(item->info().startsWith('l')){
+        if(listProc.state()==QProcess::Running)
+            return;
+        listProc.start(_shell, QStringList()<<"-c"<<"ls -hHd  --color=never "+_currentPath+ item->name());
+        listProc.waitForFinished();
+        if(listProc.readAllStandardOutput().startsWith('d')){
+            emit clickDir();
+        }
+        else{
+            emit clickFile(QFileInfo( item->name()).suffix());
+        }
+    }
+    /*
     QFileInfo finfo(_currentPath,fname);
     if(!finfo.isReadable()){
         emit noPerm();
@@ -167,6 +244,12 @@ void MainClass::longPress(QString fname)
     }
     else if(finfo.isDir())
         emit clickDir();
+        */
+}
+
+bool MainClass::hasRoot()
+{
+    return _shell=="su";
 }
 
 void MainClass::selectAll()
@@ -237,7 +320,7 @@ void MainClass::combineApkDex()
         }
     }
 
-    TaskModelItem *task = new TaskModelItem("cd "+_currentPath+";aapt5.0 a "+zip+ " classes.dex");
+    TaskModelItem *task = new TaskModelItem("cd "+_currentPath+";aapt5.0 a "+zip+ " classes.dex", _shell);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(taskFinished(QString,QString,QString)));
     task->startTask();
     tList.append(task);
@@ -252,7 +335,7 @@ void MainClass::deleteSelected()
             filesList+=_currentPath +"/" + item->name()+ " ";
         }
     }
-    TaskModelItem *task = new TaskModelItem(QString("busybox rm -r ")+filesList);
+    TaskModelItem *task = new TaskModelItem(QString("busybox rm -r ")+filesList, _shell);
     connect(task,SIGNAL(finished(QString, QString ,QString)),this,SIGNAL(deleteFinished()));
     task->startTask();
     tList.append(task);
@@ -317,7 +400,7 @@ void MainClass::saveSelected()
     for(int i=0;i<fList.count();i++){
         FileModelItem *item = qobject_cast<FileModelItem *>(fList[i]);
         if(item->checked())
-            _selectedFiles+=_currentPath+"/"+ item->name()+" ";
+            _selectedFiles+=_currentPath+ item->name()+" ";
     }
 }
 
@@ -326,7 +409,7 @@ bool MainClass::copySelected(bool cover)
     if(_currentPath==_oldPath){
         return false;
     }
-    TaskModelItem *task = new TaskModelItem(QString("busybox cp -r ")+(cover?"-f ":"") +_selectedFiles +" "+ _currentPath);
+    TaskModelItem *task = new TaskModelItem(QString("busybox cp -r ")+(cover?"-f ":"") +_selectedFiles +" "+ _currentPath, _shell);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(copyFinished()));
     task->startTask();
     tList.append(task);
@@ -338,7 +421,7 @@ bool MainClass::cutSelected(bool cover)
     if(_currentPath==_oldPath){
         return false;
     }
-    TaskModelItem *task = new TaskModelItem(QString("busybox mv ")+(cover?"-f ":"-n ") +_selectedFiles +" "+ _currentPath);
+    TaskModelItem *task = new TaskModelItem(QString("busybox mv ")+(cover?"-f ":"-n ") +_selectedFiles +" "+ _currentPath, _shell);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(cutFinished()));
     task->startTask();
     tList.append(task);
@@ -347,12 +430,13 @@ bool MainClass::cutSelected(bool cover)
 
 void MainClass::rename(QString oldName, QString newName)
 {
-    if(QFile(_currentPath+"/"+newName).exists()){
+    if(QFile(_currentPath+newName).exists()){
         emit sameNameExist();
         return;
     }
 
-    QFile(_currentPath+"/"+oldName).rename(_currentPath+"/"+newName);
+    QFile(_currentPath+oldName).rename(_currentPath+newName);
+    refreshCurrentPath();
 }
 /*
 QString MainClass::getTxtContent(QString fileName)
@@ -380,7 +464,7 @@ void MainClass::edit(QString file)
 void MainClass::createNewFile(QString name, bool type)
 {
     if(type){
-        QFile f(_currentPath+"/"+name);
+        QFile f(_currentPath+name);
         if(f.exists()||!f.open(QIODevice::WriteOnly)){
             return;
         }
@@ -402,24 +486,24 @@ int MainClass::androidOSVersion()
 
 
 
-void MainClass::decApk(QString apkFile, QString options)
+void MainClass::decApk(QString apkFile, QString options, bool rootPerm)
 {
     QString cmd("/data/data/per.pqy.apktool/apktool/apktool.sh ");
     cmd += options;
-    cmd += _currentPath +"/" + apkFile + " -o " +_currentPath + "/" + apkFile.left(apkFile.length()-4) + "_src";
-    TaskModelItem *task = new TaskModelItem(cmd);
+    cmd += _currentPath + apkFile + " -o " +_currentPath + apkFile.left(apkFile.length()-4) + "_src";
+    TaskModelItem *task = new TaskModelItem(cmd,rootPerm?_shell:"sh");
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(taskFinished(QString,QString,QString)));
     task->startTask();
     tList.append(task);
 }
 
-void MainClass::recApk(QString sourceDir, QString options, QString aapt)
+void MainClass::recApk(QString sourceDir, QString options, QString aapt, bool rootPerm)
 {
     _aapt = aapt;
     QString cmd("/data/data/per.pqy.apktool/apktool/apktool.sh ");
     cmd += options;
-    cmd += _currentPath +"/" + sourceDir + " -o " +_currentPath + "/" + sourceDir + ".apk -a /data/data/per.pqy.apktool/apktool/openjdk/bin/"+aapt;
-    TaskModelItem *task = new TaskModelItem(cmd);
+    cmd += _currentPath + sourceDir + " -o " +_currentPath  + sourceDir + ".apk -a /data/data/per.pqy.apktool/apktool/openjdk/bin/"+aapt;
+    TaskModelItem *task = new TaskModelItem(cmd,rootPerm?_shell:"sh");
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(taskFinished(QString,QString,QString)));
     task->startTask();
     tList.append(task);
@@ -428,8 +512,8 @@ void MainClass::recApk(QString sourceDir, QString options, QString aapt)
 void MainClass::signApk(QString apkFile)
 {
     QString cmd("/data/data/per.pqy.apktool/apktool/signapk.sh ");
-    cmd += _currentPath + "/" +apkFile + " " + _currentPath + "/" + QFileInfo(apkFile).baseName()+"_sign.apk";
-    TaskModelItem *task = new TaskModelItem(cmd);
+    cmd += _currentPath  +apkFile + " " + _currentPath  + QFileInfo(apkFile).baseName()+"_sign.apk";
+    TaskModelItem *task = new TaskModelItem(cmd, _shell);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(signFinished()));
     task->startTask();
     tList.append(task);
@@ -438,7 +522,7 @@ void MainClass::signApk(QString apkFile)
 void MainClass::openFile(QString file)
 {
 #if defined(Q_OS_ANDROID)
-    QAndroidJniObject filePath = QAndroidJniObject::fromString(_currentPath+"/"+file);
+    QAndroidJniObject filePath = QAndroidJniObject::fromString(_currentPath+file);
     QAndroidJniObject activity = QtAndroid::androidActivity();
     if(file.endsWith(".apk", Qt::CaseInsensitive))
         QAndroidJniObject::callStaticMethod<void>("per/pqy/apktool/Extra", "installApk", "(Lorg/qtproject/qt5/android/bindings/QtActivity;Ljava/lang/String;)V",
@@ -452,7 +536,7 @@ void MainClass::openFile(QString file)
 void MainClass::importFramework(QString apkFile)
 {
     QString cmd("/data/data/per.pqy.apktool/apktool/apktool.sh if ");
-    cmd += _currentPath + "/" + apkFile;
+    cmd += _currentPath + apkFile;
     TaskModelItem *task = new TaskModelItem(cmd);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(taskFinished(QString,QString,QString)));
     task->startTask();
@@ -461,12 +545,12 @@ void MainClass::importFramework(QString apkFile)
 
 void MainClass::oat2dex(QString odexFile)
 {
-    if(!(QFileInfo(_currentPath+ "/dex").exists() || QFileInfo(_currentPath+ "/boot.oat").exists())){
+    if(!(QFileInfo(_currentPath+ "dex").exists() || QFileInfo(_currentPath+ "boot.oat").exists())){
         emit noBootClass();
         return;
     }
     QString cmd("/data/data/per.pqy.apktool/apktool/oat2dex.sh ");
-    cmd += _currentPath+"/"+odexFile;
+    cmd += _currentPath+odexFile;
     TaskModelItem *task = new TaskModelItem(cmd);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(taskFinished(QString,QString,QString)));
     task->startTask();
@@ -517,7 +601,7 @@ void MainClass::searchFiles(QString cmd)
     else if(searchProc->state()==QProcess::Running)
         searchProc->kill();
 
-    searchProc->start("sh",QStringList()<<"-c"<<"cd "+_currentPath+";"+cmd);
+    searchProc->start(_shell,QStringList()<<"-c"<<"cd "+_currentPath+";"+cmd);
 }
 
 void MainClass::searchResult()
@@ -528,8 +612,8 @@ void MainClass::searchResult()
     QTextStream stream(&output);
     while(!stream.atEnd()){
         QString fname = stream.readLine();
-        QFileInfo f(_currentPath+"/"+fname);
-        QString finfo = qtPerm2unix(f.permissions()) + "    " + (f.isDir()?"    ":qtFileSize(f.size())) + "    "+ qtDate(f.lastModified()) + (f.isSymLink()?("    -> "+f.symLinkTarget()):"");
+        QFileInfo f(_currentPath+fname);
+        QString finfo ;//= qtPerm2unix(f.permissions()) + "    " + (f.isDir()?"    ":qtFileSize(f.size())) + "    "+ qtDate(f.lastModified()) + (f.isSymLink()?("    -> "+f.symLinkTarget()):"");
         sList.append(new FileModelItem(fname, finfo));
     }
     emit searchModelChanged();
