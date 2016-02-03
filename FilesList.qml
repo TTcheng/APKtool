@@ -219,7 +219,7 @@ ApplicationWindow {
             dialogLoader.setSource("qrc:/Themes.qml");
         }
         else if(btn===5){
-            dialogLoader.setSource("qrc:/DataMove.qml");
+//            dialogLoader.setSource("qrc:/DataMove.qml");
         }
 
         else if(btn===6){

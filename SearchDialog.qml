@@ -141,10 +141,10 @@ Item {
                 MouseArea {
                     id:mouseArea
                     anchors.fill: parent
-                    onClicked: {rectangle2.enabled = true; listView1.currentIndex = index; }
+                    onClicked: {mc.openFile(model.modelData.name) }
 
                 }
-                color: ListView.isCurrentItem ? "#ff999999":"#aa505050"
+                color: mouseArea.pressed? "#ff999999":"#aa505050"
                 Image {
                     id: icon
                     anchors.left: parent.left
@@ -231,6 +231,7 @@ Item {
             checked: true
             property int  tag: 0
         }
+   /*
         Rectangle {
             id: rectangle2
             anchors.fill: parent
@@ -266,8 +267,9 @@ Item {
 
 
             }
-        }
 
+        }
+   */
         ExclusiveGroup { id: tabPositionGroup }
 
 

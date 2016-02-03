@@ -54,10 +54,6 @@
         <translation>新建</translation>
     </message>
     <message>
-        <source>TextEdit</source>
-        <translation type="obsolete">文本编辑</translation>
-    </message>
-    <message>
         <location filename="../BtmMenu.qml" line="131"/>
         <source>Search</source>
         <translation>搜索</translation>
@@ -84,6 +80,24 @@
         <location filename="../CopyDialog.qml" line="66"/>
         <source>Cover existing files</source>
         <translation>覆盖已存在文件</translation>
+    </message>
+</context>
+<context>
+    <name>DataMove</name>
+    <message>
+        <location filename="../DataMove.qml" line="13"/>
+        <source>If your /data partition size is small, you can move app data to current path and save about 50MB. Or move back to /data for faster speed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DataMove.qml" line="25"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../DataMove.qml" line="36"/>
+        <source>Move</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -133,6 +147,11 @@
         <source>Decompile</source>
         <translation>反编译</translation>
     </message>
+    <message>
+        <location filename="../DecApk.qml" line="200"/>
+        <source>run as root</source>
+        <translation>以root权限执行</translation>
+    </message>
 </context>
 <context>
     <name>DeleteDialog</name>
@@ -178,98 +197,105 @@
         <translation>Apktool</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="229"/>
+        <location filename="../FilesList.qml" line="233"/>
         <source>Invalid length of your key!</source>
         <translation>注册码长度太短！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="255"/>
+        <location filename="../FilesList.qml" line="259"/>
         <source>Can not copy to same path!</source>
         <translation>不能复制到同一目录！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="264"/>
+        <location filename="../FilesList.qml" line="268"/>
         <source>Can not cut to same path!</source>
         <translation>不能剪切到同一目录！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="280"/>
-        <location filename="../FilesList.qml" line="286"/>
+        <location filename="../FilesList.qml" line="284"/>
+        <location filename="../FilesList.qml" line="290"/>
         <source>Added to task list!</source>
         <translation>已添加到任务队列！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="293"/>
+        <location filename="../FilesList.qml" line="297"/>
         <source>cost time: %1</source>
         <translation>耗时: %1</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="308"/>
+        <location filename="../FilesList.qml" line="302"/>
+        <source>This page is showed because of register bug.
+%1</source>
+        <translation>注册过程出现了一些问题，请联系作者。
+%1</translation>
+    </message>
+    <message>
+        <location filename="../FilesList.qml" line="317"/>
         <source>No access permission!</source>
         <translation>无访问权限！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="312"/>
+        <location filename="../FilesList.qml" line="321"/>
         <source>Files has been deleted!</source>
         <translation>文件已删除！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="314"/>
+        <location filename="../FilesList.qml" line="323"/>
         <source>Files has been copied!</source>
         <translation>文件已复制！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="315"/>
+        <location filename="../FilesList.qml" line="324"/>
         <source>Files has been cut!</source>
         <translation>文件已剪切！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="316"/>
+        <location filename="../FilesList.qml" line="325"/>
         <source>File with same name exists!</source>
         <translation>已存在同名文件！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="319"/>
+        <location filename="../FilesList.qml" line="328"/>
         <source>Copy boot.oat file to current path first, please. </source>
         <translation>请先复制boot.oat到当前目录.</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="320"/>
+        <location filename="../FilesList.qml" line="329"/>
         <source>Unsupported operation.</source>
         <translation>不支持的操作。</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="326"/>
+        <location filename="../FilesList.qml" line="335"/>
         <source>Congratulations! You have registered this app!</source>
         <translation>恭喜！您已注册成功！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="330"/>
+        <location filename="../FilesList.qml" line="339"/>
         <source>Oops! Your key is invalid! Check it, please.</source>
         <translation>非法注册码，请重新输入。</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="333"/>
+        <location filename="../FilesList.qml" line="342"/>
         <source>Verify timeout! Please try again.</source>
         <translation>验证超时，请重试。</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="631"/>
+        <location filename="../FilesList.qml" line="645"/>
         <source>Select All</source>
         <translation>全选</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="640"/>
+        <location filename="../FilesList.qml" line="654"/>
         <source>Reverse Selection</source>
         <translation>反选</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="648"/>
+        <location filename="../FilesList.qml" line="662"/>
         <source>Combine</source>
         <translation>合并apk/dex</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="657"/>
+        <location filename="../FilesList.qml" line="671"/>
         <source>Finish Selection</source>
         <translation>完成选择</translation>
     </message>
@@ -285,17 +311,17 @@
 <context>
     <name>NewDialog</name>
     <message>
-        <location filename="../NewDialog.qml" line="24"/>
+        <location filename="../NewDialog.qml" line="23"/>
         <source>Folder</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../NewDialog.qml" line="32"/>
+        <location filename="../NewDialog.qml" line="31"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../NewDialog.qml" line="45"/>
+        <location filename="../NewDialog.qml" line="44"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -340,21 +366,26 @@
         <source>Recompile</source>
         <translation>回编译</translation>
     </message>
+    <message>
+        <location filename="../RecApk.qml" line="174"/>
+        <source>run as root</source>
+        <translation>以root权限执行</translation>
+    </message>
 </context>
 <context>
     <name>Register</name>
     <message>
-        <location filename="../Register.qml" line="27"/>
+        <location filename="../Register.qml" line="25"/>
         <source>Input your key, please.</source>
         <translation>请输入注册码.</translation>
     </message>
     <message>
-        <location filename="../Register.qml" line="63"/>
+        <location filename="../Register.qml" line="60"/>
         <source>Register</source>
         <translation>注册</translation>
     </message>
     <message>
-        <location filename="../Register.qml" line="73"/>
+        <location filename="../Register.qml" line="70"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -424,16 +455,6 @@ key: %1</source>
         <source>by content</source>
         <translation>根据文件内容</translation>
     </message>
-    <message>
-        <location filename="../SearchDialog.qml" line="255"/>
-        <source>Open</source>
-        <translation>打开</translation>
-    </message>
-    <message>
-        <location filename="../SearchDialog.qml" line="263"/>
-        <source>Edit</source>
-        <translation>编辑</translation>
-    </message>
 </context>
 <context>
     <name>Settings</name>
@@ -458,7 +479,7 @@ key: %1</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="48"/>
+        <location filename="../Settings.qml" line="57"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>
@@ -471,8 +492,8 @@ key: %1</source>
         <translation>Apktool</translation>
     </message>
     <message>
-        <location filename="../Splash.qml" line="25"/>
-        <location filename="../Splash.qml" line="109"/>
+        <location filename="../Splash.qml" line="22"/>
+        <location filename="../Splash.qml" line="106"/>
         <source>unactivated version, Please wait for %1 seconds!</source>
         <translation>未注册版本，需要等待%1秒！</translation>
     </message>
@@ -556,121 +577,6 @@ key: %1</source>
         <location filename="../Themes.qml" line="273"/>
         <source>button background</source>
         <translation>按钮背景</translation>
-    </message>
-    <message>
-        <source>Please choose a color</source>
-        <translation type="obsolete">请选择颜色</translation>
-    </message>
-</context>
-<context>
-    <name>TxtEditor</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">编辑器</translation>
-    </message>
-    <message>
-        <source>Navi</source>
-        <translation type="obsolete">导航</translation>
-    </message>
-    <message>
-        <source>&lt;</source>
-        <translation type="obsolete">&lt;</translation>
-    </message>
-    <message>
-        <source>Up</source>
-        <translation type="obsolete">上</translation>
-    </message>
-    <message>
-        <source>&gt;</source>
-        <translation type="obsolete">&gt;</translation>
-    </message>
-    <message>
-        <source>PgUp</source>
-        <translation type="obsolete">上翻</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="obsolete">左</translation>
-    </message>
-    <message>
-        <source>Down</source>
-        <translation type="obsolete">下</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="obsolete">右</translation>
-    </message>
-    <message>
-        <source>PgDn</source>
-        <translation type="obsolete">下翻</translation>
-    </message>
-    <message>
-        <source>goto</source>
-        <translation type="obsolete">跳转</translation>
-    </message>
-    <message>
-        <source>Tool</source>
-        <translation type="obsolete">工具</translation>
-    </message>
-    <message>
-        <source>Redo</source>
-        <translation type="obsolete">重做</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="obsolete">保存</translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="obsolete">粘贴</translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation type="obsolete">退出</translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="obsolete">剪切</translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation type="obsolete">撤销</translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="obsolete">复制</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation type="obsolete">搜索</translation>
-    </message>
-    <message>
-        <source>Case</source>
-        <translation type="obsolete">大小写</translation>
-    </message>
-    <message>
-        <source>Prev</source>
-        <translation type="obsolete">上一个</translation>
-    </message>
-    <message>
-        <source>Next</source>
-        <translation type="obsolete">下一个</translation>
-    </message>
-    <message>
-        <source>Replace</source>
-        <translation type="obsolete">替换</translation>
-    </message>
-    <message>
-        <source>ReplaceAll</source>
-        <translation type="obsolete">全部替换</translation>
-    </message>
-    <message>
-        <source>Save?</source>
-        <translation type="obsolete">保存？</translation>
-    </message>
-    <message>
-        <source>Save*</source>
-        <translation type="obsolete">保存*</translation>
     </message>
 </context>
 </TS>

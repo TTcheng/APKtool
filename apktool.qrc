@@ -36,6 +36,5 @@
         <file>Themes.qml</file>
         <file>FileDialog.qml</file>
         <file>MemInfo.qml</file>
-        <file>DataMove.qml</file>
     </qresource>
 </RCC>

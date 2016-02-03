@@ -19,7 +19,7 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: parent.height/10
         anchors.horizontalCenter: parent.horizontalCenter
-        //        inputMask: "nnnnnnnnnnnnnnn"
+        Component.onCompleted: paste()
 
         id: textfield
         placeholderText: qsTr("Input your key, please.")

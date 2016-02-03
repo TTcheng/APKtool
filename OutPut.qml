@@ -57,7 +57,7 @@ Image {
     MyButton {
         id: button1
         width: parent.width/3
-        height: parent.height/12
+        height: parent.height/15
         text: qsTr("Copy")
         anchors.left: parent.left
         anchors.leftMargin: 0
@@ -69,7 +69,7 @@ Image {
     MyButton {
         id: button2
         width: parent.width/3
-        height: parent.height/12
+        height: parent.height/15
         text: qsTr("OK")
         anchors.verticalCenter: button1.verticalCenter
         anchors.right: parent.right

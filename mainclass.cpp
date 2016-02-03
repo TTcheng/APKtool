@@ -28,6 +28,7 @@ MainClass::MainClass(QObject *parent) : QObject(parent), watcher(NULL), searchPr
     connect(this, SIGNAL(copyFinished()), this, SLOT(refreshCurrentPath()));
     connect(this, SIGNAL(deleteFinished()), this, SLOT(refreshCurrentPath()));
     connect(this, SIGNAL(cutFinished()), this, SLOT(refreshCurrentPath()));
+    connect(this, SIGNAL(signFinished()), this, SLOT(refreshCurrentPath()));
     connect(this, SIGNAL(taskFinished(QString,QString,QString)), this, SLOT(refreshCurrentPath()));
 /*
     QProcess proc;
@@ -89,91 +90,10 @@ void MainClass::refreshCurrentPath()
         }
         fList.append(new FileModelItem(filename, fileinfo));
     }
-    /*
-    QDir parent(_currentPath);
-    if(!parent.exists())
-        _currentPath = "/";
-    QStringList currentFilesList = QDir(_currentPath).entryList(currentFilter(),QDir::DirsFirst| QDir::IgnoreCase);
-    QStringList currentFilesInfoList = filesInfoList();
-    for(int i=0;i<currentFilesList.count();i++)
-        fList.append(new FileModelItem(currentFilesList[i],currentFilesInfoList[i]));
-*/
-//    createFSWatcher();
+
     emit fileModelChanged();
 }
-/*
-QStringList MainClass::filesInfoList()
-{
-    QFileInfoList infoList = QDir(_currentPath).entryInfoList(currentFilter(),QDir::DirsFirst| QDir::IgnoreCase);
-    QStringList finfoList ;
-    foreach(const QFileInfo &f,infoList){
-        finfoList << qtPerm2unix(f.permissions()) + "    " + (f.isDir()?"    ":qtFileSize(f.size())) + "    "+ qtDate(f.lastModified()) + (f.isSymLink()?("    -> "+f.symLinkTarget()):"");
-    }
-    return finfoList;
-}
 
-QString MainClass::qtPerm2unix(QFileDevice::Permissions p)
-{
-    QString str;
-    if(p&QFileDevice::ReadOwner)
-        str+="r";
-    else
-        str+="-";
-    if(p&QFileDevice::WriteOwner)
-        str+="w";
-    else
-        str+="-";
-    if(p&QFileDevice::ExeOwner)
-        str+="x";
-    else
-        str+="-";
-    if(p&QFileDevice::ReadGroup)
-        str+="r";
-    else
-        str+="-";
-    if(p&QFileDevice::WriteGroup)
-        str+="w";
-    else
-        str+="-";
-    if(p&QFileDevice::ExeGroup)
-        str+="x";
-    else
-        str+="-";
-    if(p&QFileDevice::ReadOther)
-        str+="r";
-    else
-        str+="-";
-    if(p&QFileDevice::WriteOther)
-        str+="w";
-    else
-        str+="-";
-    if(p&QFileDevice::ExeOther)
-        str+="x";
-    else
-        str+="-";
-    return str;
-}
-
-QString MainClass::qtFileSize(qint64 s)
-{
-    QString str;
-    if(s>1024L*1024L*1024L)
-        str = QString::number(s/1024.0/1024.0/1024.0,'f',2)+"G";
-
-    else if(s>1024L*1024L)
-        str = QString::number(s/1024.0/1024.0,'f',2)+"M";
-    else if(s>1024L)
-        str = QString::number(s/1024.0,'f',2)+"K";
-    else
-        str = QString::number(s)+"B";
-    return str;
-}
-
-QString MainClass::qtDate(QDateTime d)
-{
-    return d.toString("hh:mm:ss    dd/MM/yyyy");
-}
-*/
 void MainClass::singlePress(int index)
 {
 
@@ -234,17 +154,7 @@ void MainClass::longPress(int index)
             emit clickFile(QFileInfo( item->name()).suffix());
         }
     }
-    /*
-    QFileInfo finfo(_currentPath,fname);
-    if(!finfo.isReadable()){
-        emit noPerm();
-    }
-    else if(finfo.isFile()){
-        emit clickFile(finfo.suffix());
-    }
-    else if(finfo.isDir())
-        emit clickDir();
-        */
+
 }
 
 bool MainClass::hasRoot()
@@ -438,29 +348,7 @@ void MainClass::rename(QString oldName, QString newName)
     QFile(_currentPath+oldName).rename(_currentPath+newName);
     refreshCurrentPath();
 }
-/*
-QString MainClass::getTxtContent(QString fileName)
-{
-    QFile file(_currentPath+"/"+fileName);
-    if(!file.open(QIODevice::ReadOnly|QIODevice::Text))
-        return tr("No read permission!");
-    QTextStream in(&file);
-    return in.readAll();
-}
 
-void MainClass::edit(QString file)
-{
-    if(QFileInfo(_currentPath+"/"+file).isWritable()){
-        TxtEditor *editor = new TxtEditor(NULL, _currentPath+"/"+file);
-        editor->show();
-        connect(editor, SIGNAL(closed()),this, SIGNAL(editorClosed()));
-    }
-    else{
-        emit editorClosed();
-        emit noPerm();
-    }
-}
-*/
 void MainClass::createNewFile(QString name, bool type)
 {
     if(type){
@@ -473,18 +361,6 @@ void MainClass::createNewFile(QString name, bool type)
     else
         QDir(_currentPath).mkdir(name);
 }
-/*
-int MainClass::androidOSVersion()
-{
-    QProcess proc;
-    proc.start("getprop", QStringList()<<"ro.build.version.sdk");
-    proc.waitForFinished(500);
-    int ver = proc.readAllStandardOutput().toInt();
-    return ver>8?ver:9;
-}
-*/
-
-
 
 void MainClass::decApk(QString apkFile, QString options, bool rootPerm)
 {
@@ -537,7 +413,7 @@ void MainClass::importFramework(QString apkFile)
 {
     QString cmd("/data/data/per.pqy.apktool/apktool/apktool.sh if ");
     cmd += _currentPath + apkFile;
-    TaskModelItem *task = new TaskModelItem(cmd);
+    TaskModelItem *task = new TaskModelItem(cmd, _shell);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(taskFinished(QString,QString,QString)));
     task->startTask();
     tList.append(task);
@@ -551,7 +427,7 @@ void MainClass::oat2dex(QString odexFile)
     }
     QString cmd("/data/data/per.pqy.apktool/apktool/oat2dex.sh ");
     cmd += _currentPath+odexFile;
-    TaskModelItem *task = new TaskModelItem(cmd);
+    TaskModelItem *task = new TaskModelItem(cmd, _shell);
     connect(task,SIGNAL(finished(QString,QString,QString)),this,SIGNAL(taskFinished(QString,QString,QString)));
     task->startTask();
     tList.append(task);

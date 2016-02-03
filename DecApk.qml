@@ -157,7 +157,7 @@ Item {
         MyButton {
             id: button1
             width: parent.width/3
-            height: parent.height/12
+            height: parent.height/15
             text: qsTr("Cancel")
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
@@ -169,7 +169,7 @@ Item {
         MyButton {
             id: button2
             width: parent.width/3
-            height: parent.height/12
+            height: parent.height/15
             text: qsTr("Decompile")
             anchors.verticalCenter: button1.verticalCenter
             anchors.right: parent.right
