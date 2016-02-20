@@ -23,9 +23,7 @@ Item {
             name: "splash"
             PropertyChanges {
                 target: mainLoader
-                source: "qrc:/Splash.qml"
-
-            }
+                source: "qrc:/Splash.qml"}
         },
         State {
             name: "main"

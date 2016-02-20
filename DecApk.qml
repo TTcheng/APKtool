@@ -203,6 +203,7 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 20
             enabled: mc.hasRoot()
+//            checked: true
         }
     }
 

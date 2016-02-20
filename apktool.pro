@@ -3,6 +3,7 @@ TEMPLATE = app
 QT += qml quick
 android-g++:QT += androidextras
 CONFIG += c++11
+#QMAKE_CXXFLAGS_WARN_ON -= -Wall
 
 SOURCES += main.cpp \
     mainclass.cpp \
@@ -11,8 +12,7 @@ SOURCES += main.cpp \
     keythread.cpp \
     themeprovider.cpp \
     myfiledialog.cpp \
-    sysinfo.cpp \
-    settings.cpp
+    sysinfo.cpp
 
 RESOURCES += \
     apktool.qrc
@@ -43,8 +43,7 @@ HEADERS += \
     keythread.h \
     themeprovider.h \
     myfiledialog.h \
-    sysinfo.h \
-    settings.h
+    sysinfo.h
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

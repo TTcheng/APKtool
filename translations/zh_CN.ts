@@ -83,24 +83,6 @@
     </message>
 </context>
 <context>
-    <name>DataMove</name>
-    <message>
-        <location filename="../DataMove.qml" line="13"/>
-        <source>If your /data partition size is small, you can move app data to current path and save about 50MB. Or move back to /data for faster speed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DataMove.qml" line="25"/>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <location filename="../DataMove.qml" line="36"/>
-        <source>Move</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>DecApk</name>
     <message>
         <location filename="../DecApk.qml" line="31"/>
@@ -277,7 +259,7 @@
     <message>
         <location filename="../FilesList.qml" line="342"/>
         <source>Verify timeout! Please try again.</source>
-        <translation>验证超时，请重试。</translation>
+        <translation type="unfinished">验证超时，请重试注册，或者切换其他网络再注册。</translation>
     </message>
     <message>
         <location filename="../FilesList.qml" line="645"/>
@@ -479,7 +461,7 @@ key: %1</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="57"/>
+        <location filename="../Settings.qml" line="56"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>

@@ -8,18 +8,32 @@
 #include <QDateTime>
 #include <stdlib.h>
 #include <stdio.h>
+#include <pwd.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <string.h>
+#include <QProcess>
 #include <QDebug>
 
 
 
 KeyClass::KeyClass(QObject *parent) : QObject(parent)
 {
+    char *home;
+    if((home = getenv("HOME")) == NULL){
+        home = getpwuid(getuid())->pw_dir;
+    }
+    _keyfile = (char*)malloc(strlen(home)+10);
+    strcpy(_keyfile, home);
+//    qWarning()<<_keyfile;
+    strcat(_keyfile, "/keyfile");
+//    qWarning()<<_keyfile;
 
 }
 
 bool KeyClass::isRegisterd()
 {
-    QFileInfo finfo(QDir::homePath()+"/userkey");
+    QFileInfo finfo(_keyfile);
     if(!finfo.exists() || finfo.owner()!=getlogin())
         return false;
     QString userkey = userKey(true);
@@ -38,9 +52,8 @@ bool KeyClass::isRegisterd()
     }
 
     quint64 key = userkey.toLongLong() - getuid();
-    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
     struct stat st;
-    stat(keyfile, &st);
+    stat(_keyfile, &st);
     quint64 validkey = st.st_mtime;
     return key==validkey;
 }
@@ -59,7 +72,7 @@ void KeyClass::verifyKey(QString userKey)
     timer = new QTimer;
     timer->setSingleShot(true);
     connect(timer, SIGNAL(timeout()),this, SIGNAL(verifyTimeout()));
-    timer->start(5000);
+    timer->start(3000);
     key = new keyThread;
     connect(key, SIGNAL(gotKey(QString)),this, SLOT(_verifyKey(QString)));
     key->start();
@@ -85,7 +98,7 @@ void KeyClass::_verifyKey(QString _validKey)
     for(int j=validKey.length()-2;j>0;j-=3)
         validKey.remove(j, 1);
     _valid = validKey.toLongLong();
-    if(::llabs(_user-_valid)<3600L*24){
+    if(llabs(_user-_valid)<3600L*24){
         QSettings settings;
         settings.setValue("key/userkey", _userKey);
         createKeyFile();
@@ -103,10 +116,11 @@ void KeyClass::_verifyKey(QString _validKey)
 
 void KeyClass::createKeyFile()
 {
-    QSettings settings;
-    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
+    QSettings settings;    
     struct stat st;
-    FILE *fp = fopen(keyfile, "w");
+    QDir::home().mkpath(".");
+    unlink(_keyfile);
+    FILE *fp = fopen(_keyfile, "w");
     qsrand(time(NULL));
     for(int i=0;i<32;i++){
         fputc(qrand()%128, fp);
@@ -131,49 +145,10 @@ void KeyClass::createKeyFile()
     settings.setValue("key/cryptkey", cryptKey);
 }
 
-int KeyClass::runCount()
-{
-    QSettings settings;
-    if(settings.isWritable())
-        return settings.value("user/runCount", 15).toUInt();
-    else
-        return 15;
-}
-
-QString KeyClass::genBugMsg()
-{
-    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
-    struct stat st;
-    QString userkey = userKey(true);
-    for(int i=userkey.length()-2;i>0;i-=3){
-        int j = userkey[i].toLatin1()-'0';
-        userkey.remove(i, 1);
-        if(j%2){
-            userkey[i-1] = (userkey[i-1].toLatin1() - '0' -j +10)%10 +'0';
-            userkey[i] = (userkey[i].toLatin1() - '0' -j +10)%10 +'0';
-        }else{
-            userkey[i] = (userkey[i].toLatin1() - '0' +j )%10 +'0';
-            userkey[i-1] = (userkey[i-1].toLatin1() - '0' +j)%10 +'0';
-        }
-    }
-    userkey+="\n";
-    if(!stat(keyfile, &st)){
-        userkey+= QString::number(st.st_mtime + getuid());
-    }
-    else{
-        userkey+=("xxxxxxxxxxxx");
-    }
-    userkey+="\n";
-    userkey+="home:"+QDir::homePath();
-    return userkey;
-
-}
-
 bool KeyClass::_secondVerify()
 {
-    const char *keyfile = (QDir::homePath()+"/userkey").toLatin1().toStdString().c_str();
     struct stat st;
-    if(stat(keyfile, &st))
+    if(stat(_keyfile, &st))
         return false;
     QString cryptKey = QString::number(st.st_mtime + getuid());
     qsrand(time(NULL));
@@ -195,3 +170,53 @@ bool KeyClass::_secondVerify()
     return isRegisterd();
 
 }
+
+int KeyClass::runCount()
+{
+    QSettings settings;
+    if(settings.isWritable())
+        return settings.value("user/runCount", 15).toUInt();
+    else
+        return 15;
+}
+
+QString KeyClass::genBugMsg()
+{
+    struct stat st;
+    QString userkey = userKey(true);
+    for(int i=userkey.length()-2;i>0;i-=3){
+        int j = userkey[i].toLatin1()-'0';
+        userkey.remove(i, 1);
+        if(j%2){
+            userkey[i-1] = (userkey[i-1].toLatin1() - '0' -j +10)%10 +'0';
+            userkey[i] = (userkey[i].toLatin1() - '0' -j +10)%10 +'0';
+        }else{
+            userkey[i] = (userkey[i].toLatin1() - '0' +j )%10 +'0';
+            userkey[i-1] = (userkey[i-1].toLatin1() - '0' +j)%10 +'0';
+        }
+    }
+    userkey+="\n";
+    if(!stat(_keyfile, &st)){
+        userkey+= QString::number(st.st_mtime + getuid());
+    }
+    else{
+        userkey+=("xxxxxxxxxxxx");
+    }
+    userkey+="\n";
+    userkey+="home:"+QDir::homePath();
+    userkey+= "\n";
+    userkey+=_keyfile;
+    QProcess proc;
+    char *home;
+    if((home = getenv("HOME")) == NULL){
+        home = getpwuid(getuid())->pw_dir;
+    }
+    proc.start("ls", QStringList()<<"-la"<<home);
+    proc.waitForFinished();
+    userkey+= "\n";
+    userkey+= proc.readAllStandardOutput();
+    return userkey;
+
+}
+
+

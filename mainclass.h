@@ -8,13 +8,12 @@
 #include <QDateTime>
 //#include <QDebug>
 #include <QDir>
-#include <QFileSystemWatcher>
+#include <QSettings>
 
 
 #include "filemodelitem.h"
 #include "taskmodelitem.h"
 #include "keythread.h"
-
 
 class MainClass : public QObject
 {
@@ -39,6 +38,8 @@ public:
     QList<QObject*> searchModel(){ return sList; }
 
     int taskNum();
+
+//    static bool cmpFileModel(QObject *a, QObject *b);
 
 signals:
     void fileModelChanged();
@@ -91,6 +92,14 @@ public:
 
    Q_INVOKABLE void setTheme(QString type, QString fname);
 
+    Q_INVOKABLE int intValue(QString key);
+    Q_INVOKABLE QString strValue(QString key);
+    Q_INVOKABLE bool boolValue(QString key);
+
+    Q_INVOKABLE void setIntValue(QString key, int value);
+    Q_INVOKABLE void setStrValue(QString key, QString value);
+    Q_INVOKABLE void setBoolValue(QString key, bool value);
+
 
 private slots:
     void deleteKey();
@@ -105,11 +114,12 @@ private:
     QList<QObject*> fList; //files list
     QList<QObject*> tList; //tasks list
     QList<QObject*> sList; //search files list
-    void createFSWatcher();
-    QFileSystemWatcher *watcher;
+//    void createFSWatcher();
+//    QFileSystemWatcher *watcher;
     keyThread *_key;
     QString _selectedFiles;
     QString _aapt;
+    QSettings st;
     QProcess *searchProc, listProc;
     inline QDir::Filters currentFilter(){
         if(QDir(_currentPath).isRoot())

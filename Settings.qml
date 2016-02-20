@@ -41,15 +41,14 @@ Rectangle {
             text: qsTr("Theme")
             onClicked:setting.clicked(4)
         }
-        /*
-        MyButton {
+/*
+        RootSwitch {
             width: parent.btnWid
             height: parent.btnHei
 
-            text: qsTr("Data Movement")
-            onClicked:setting.clicked(5)
+
         }
-        */
+*/
         MyButton {
             width: parent.btnWid
             height: parent.btnHei

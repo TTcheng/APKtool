@@ -13,10 +13,14 @@ class FileModelItem :public QObject
 
 public:
 
-    FileModelItem(const QString &name, const QString &info):_name(name),_info(info), _checked(false){}
+    FileModelItem(const QString &name, const QString &info, const QString &st = "", const QString &symtarget = "")
+        :_name(name),_info(info), sortTag(st), _symtarget(symtarget), _checked(false){}
     QString name() const{ return _name; }
     QString info() const{ return _info; }
+    QString sym() const { return _symtarget; }
     bool checked() const {return _checked; }
+    QString sortTag;
+
 
 
 
@@ -34,8 +38,8 @@ public slots:
     }
 
 private:
-    QString _name, _info;
-    bool _checked;
+    QString _name, _info, _symtarget;
+    bool _checked; //_type: true-> file; false->folder
 
 };
 

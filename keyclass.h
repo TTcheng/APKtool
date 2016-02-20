@@ -32,6 +32,7 @@ private:
     QString _userKey;
     void createKeyFile();
     bool _secondVerify();
+    char *_keyfile;
 };
 
 #endif // KEYCLASS_H

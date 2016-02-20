@@ -56,6 +56,8 @@ QPixmap FileImageProvider::requestPixmap(const QString& id, QSize* size, const Q
             pixmap.load(id);
          }else pixmap.load(":/icons/file.png");
     }
+     else
+          pixmap.load(":/icons/unknown.png");
     if(pixmap.isNull())
         pixmap.load(":/icons/unknown.png");
     if(f.isSymLink()){

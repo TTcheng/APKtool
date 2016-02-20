@@ -11,19 +11,24 @@
 #include <QtAndroidExtras/QAndroidJniObject>
 #endif
 
-MainClass::MainClass(QObject *parent) : QObject(parent), watcher(NULL), searchProc(NULL)
+bool cmpFileModel(QObject *_a, QObject *_b)
 {
-    QSettings settings;
-    _currentPath = settings.value("user/lastpath", "/").toString();
-    _aapt = settings.value("user/aapt","aapt6.0").toString();
-    if(QFileInfo("/system/bin/su").exists()||QFileInfo("/system/xbin/su").exists()||QFileInfo("/bin/su").exists())
+    FileModelItem* a = qobject_cast<FileModelItem *>(_a);
+    FileModelItem* b = qobject_cast<FileModelItem *>(_b);
+    return a->sortTag.compare(b->sortTag, Qt::CaseInsensitive) <0;
+}
+
+
+MainClass::MainClass(QObject *parent) : QObject(parent), searchProc(NULL)
+{
+    _currentPath = st.value("user/lastpath", "/").toString();
+    _aapt = st.value("user/aapt","aapt6.0").toString();
+    _shell = "sh";
+    if(QFileInfo("/system/.nosu").exists()||QFileInfo("/sdcard/.nosu").exists())
+         ;
+    else if(QFileInfo("/system/bin/su").exists()||QFileInfo("/system/xbin/su").exists()||QFileInfo("/bin/su").exists())
         _shell = "su";
-    else
-        _shell = "sh";
-    QProcessEnvironment env = listProc.processEnvironment();
-    QString path = env.value("PATH");
-    env.insert("PATH", "/data/data/per.pqy.apktool/apktool/openjdk/bin:"+path);
-    listProc.setProcessEnvironment(env);
+
     refreshCurrentPath();
     connect(this, SIGNAL(copyFinished()), this, SLOT(refreshCurrentPath()));
     connect(this, SIGNAL(deleteFinished()), this, SLOT(refreshCurrentPath()));
@@ -41,55 +46,64 @@ MainClass::MainClass(QObject *parent) : QObject(parent), watcher(NULL), searchPr
 
 MainClass::~MainClass()
 {
-    QSettings settings;
-    settings.setValue("user/lastpath", _currentPath);
-    settings.setValue("user/aapt", _aapt);
+    st.setValue("user/lastpath", _currentPath);
+    st.setValue("user/aapt", _aapt);
 }
 
 void MainClass::refreshCurrentPath()
 {
-    if(listProc.state()==QProcess::Running)
-        return;
-    listProc.start(_shell, QStringList()<<"-c"<<"ls -Agoh --full-time  --color=never "+_currentPath);
+//    if(listProc.state()==QProcess::Running)
+//       listProc.kill();
+    listProc.start(_shell, QStringList()<<"-c"<<"ls -al "+_currentPath);
     listProc.waitForFinished();
+    /*
     if(listProc.exitCode()==2){
         _currentPath = "/";
-        listProc.start(_shell, QStringList()<<"-c"<<"ls -Agoh --full-time  --color=never "+_currentPath);
+        listProc.start(_shell, QStringList()<<"-c"<<"ls -l "+_currentPath);
         listProc.waitForFinished();
     }
-
+*/
     qDeleteAll(fList);
     fList.clear();
     QByteArray output = listProc.readAllStandardOutput();
+//    qWarning()<<output;
+//    qWarning()<< listProc.readAllStandardError();
     QTextStream out(&output);
-    QString line, filename, fileinfo;
-    QStringList splitStr;
+    QString line, filename, fileinfo, sortTag;
+    QString symtarget;
     if(_currentPath!="/")
         fList.append(new FileModelItem("..", " "));
-    line = out.readLine();
+
     while(!out.atEnd()){
         line = out.readLine();
-        splitStr = line.split(QRegExp("\\s+"),  QString::SkipEmptyParts);
-        if(splitStr.count()<1)
-            continue;
-        if(splitStr[0].startsWith('-')){
-            filename = splitStr[6];
-            fileinfo =splitStr[0] + "    " + splitStr[2] + "    "+splitStr[3]+ "  "+splitStr[4].left(8) ;
+
+        if(line.startsWith('l')){
+            int nameOffset1 = line.indexOf(':')+4;
+            int nameOffset2 = line.indexOf(" ->");
+            filename = line.mid(nameOffset1, nameOffset2 - nameOffset1);
+            fileinfo =line.left(nameOffset1)+ "  "+line.right(line.length() - nameOffset2) ;
+            symtarget = line.right(line.length() - nameOffset2 - 4);
+            if(QFileInfo(_currentPath, symtarget).isDir())
+                sortTag = "1";
+            else
+                sortTag = "2";
+            sortTag += filename;
         }
-        else if(splitStr[0].startsWith('d')){
-            filename = splitStr[6];
-            fileinfo =splitStr[0] + "            "+splitStr[3]+ "  "+splitStr[4].left(8) ;
-        }
-        else if(splitStr[0].startsWith('l')){
-            filename = splitStr[6];
-            fileinfo =splitStr[0] + "            "+splitStr[3]+ "  "+splitStr[4].left(8) +"  "+splitStr[7]+ splitStr[8];
-        }
-        else if(splitStr[0].startsWith('b')||splitStr[0].startsWith('c')){
-            filename = splitStr[7];
-            fileinfo = splitStr[0] + "    " + splitStr[2] +splitStr[3]+ "    "+splitStr[4]+ "  "+splitStr[5].left(8) ;
-        }
-        fList.append(new FileModelItem(filename, fileinfo));
+        else{
+            int nameOffset1 = line.indexOf(':')+4;
+            filename = line.right(line.length() - nameOffset1);
+            fileinfo =line.left(nameOffset1);
+            if(QFileInfo(_currentPath, filename).isDir())
+                sortTag = "1";
+            else
+                sortTag = "2";
+            sortTag += filename;
+        }        
+
+        fList.append(new FileModelItem(filename, fileinfo, sortTag, symtarget));
     }
+
+    std::sort(fList.begin()+1, fList.end(), cmpFileModel);
 
     emit fileModelChanged();
 }
@@ -118,10 +132,10 @@ void MainClass::singlePress(int index)
         emit clickFile(QFileInfo( item->name()).suffix());
     }
     else if(item->info().startsWith('l')){
-        if(listProc.state()==QProcess::Running)
-            return;
+/*        if(listProc.state()==QProcess::Running)
+            listProc.kill();
 
-        listProc.start(_shell, QStringList()<<"-c"<<"ls -hHd --full-time --color=never "+_currentPath+ item->name());
+        listProc.start(_shell, QStringList()<<"-c"<<"ls -ld "+ item->sym());
         listProc.waitForFinished();
         if(listProc.readAllStandardOutput().startsWith('d')){
             _currentPath +=  item->name() + "/";
@@ -130,6 +144,13 @@ void MainClass::singlePress(int index)
         else{
             emit clickFile(QFileInfo( item->name()).suffix());
         }
+        */
+        if(QFileInfo(_currentPath, item->sym()).isDir()){
+            _currentPath +=  item->name() + "/";
+            refreshCurrentPath();
+        }
+        else
+            emit clickFile(QFileInfo( item->name()).suffix());
     }
 }
 
@@ -143,16 +164,11 @@ void MainClass::longPress(int index)
         emit clickFile(QFileInfo( item->name()).suffix());
     }
     else if(item->info().startsWith('l')){
-        if(listProc.state()==QProcess::Running)
-            return;
-        listProc.start(_shell, QStringList()<<"-c"<<"ls -hHd  --color=never "+_currentPath+ item->name());
-        listProc.waitForFinished();
-        if(listProc.readAllStandardOutput().startsWith('d')){
+        if(QFileInfo(_currentPath, item->sym()).isDir()){
             emit clickDir();
         }
-        else{
+        else
             emit clickFile(QFileInfo( item->name()).suffix());
-        }
     }
 
 }
@@ -272,21 +288,6 @@ int MainClass::taskNum()
     return runningTasks;
 }
 
-void MainClass::createFSWatcher()
-{
-    delete watcher;
-    watcher = new QFileSystemWatcher;
-    QDir d(_currentPath);
-    do{
-        if(d.isRoot())
-            break;
-        watcher->addPath(d.absolutePath());
-        break;
-        //            d.cdUp();
-    }while(1);
-    connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(refreshCurrentPath()));
-}
-
 void MainClass::genKey()
 {
 
@@ -360,6 +361,8 @@ void MainClass::createNewFile(QString name, bool type)
     }
     else
         QDir(_currentPath).mkdir(name);
+
+    refreshCurrentPath();
 }
 
 void MainClass::decApk(QString apkFile, QString options, bool rootPerm)
@@ -498,47 +501,77 @@ void MainClass::searchResult()
 
 void MainClass::setTheme(QString type, QString fname)
 {
-    QSettings settings;
     if(!fname.isEmpty()){
         if(type=="bg"){
             QFile::remove(QDir::homePath()+"/bg");
             if(QFile::copy(fname, QDir::homePath()+"/bg"))
-                settings.setValue("theme/background", "custom");
+                st.setValue("theme/background", "custom");
             else
-                settings.setValue("theme/background", "");
+                st.setValue("theme/background", "");
         }
 
         else if(type=="itembg"){
             QFile::remove(QDir::homePath()+"/itembg");
             if(QFile::copy(fname, QDir::homePath()+"/itembg"))
-                settings.setValue("theme/itembackground", "custom");
+                st.setValue("theme/itembackground", "custom");
             else
-                settings.setValue("theme/itembackground", "");
+                st.setValue("theme/itembackground", "");
         }
         else if(type=="buttonbg"){
             QFile::remove(QDir::homePath()+"/buttonbg");
             if(QFile::copy(fname, QDir::homePath()+"/buttonbg"))
-                settings.setValue("theme/buttonbackground", "custom");
+                st.setValue("theme/buttonbackground", "custom");
             else
-                settings.setValue("theme/buttonbackground", "");
+                st.setValue("theme/buttonbackground", "");
         }
     }
     else{
         if(type=="bg"){
             QFile::remove(QDir::homePath()+"/bg");
-            settings.setValue("theme/background", "");
+            st.setValue("theme/background", "");
         }
 
         else if(type=="itembg"){
             QFile::remove(QDir::homePath()+"/itembg");
-            settings.setValue("theme/itembackground", "");
+            st.setValue("theme/itembackground", "");
         }
 
         else if(type=="buttonbg"){
             QFile::remove(QDir::homePath()+"/buttonbg");
-            settings.setValue("theme/buttonbackground", "");
+            st.setValue("theme/buttonbackground", "");
         }
     }
-    settings.sync();
+    st.sync();
     emit themeChanged();
+}
+
+int MainClass::intValue(QString key)
+{
+    return st.value(key).toInt();
+}
+
+QString MainClass::strValue(QString key)
+{
+    return st.value(key).toString();
+}
+
+bool MainClass::boolValue(QString key)
+{
+    return st.value(key).toBool();
+}
+
+
+void MainClass::setIntValue(QString key, int value)
+{
+    st.setValue(key, value);
+}
+
+void  MainClass::setStrValue(QString key, QString value)
+{
+    st.setValue(key,value);
+}
+
+void MainClass::setBoolValue(QString key, bool value)
+{
+    st.setValue(key,value);
 }
