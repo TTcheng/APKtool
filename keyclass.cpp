@@ -31,6 +31,11 @@ KeyClass::KeyClass(QObject *parent) : QObject(parent)
 
 }
 
+KeyClass::~KeyClass()
+{
+    free(_keyfile);
+}
+
 bool KeyClass::isRegisterd()
 {
     QFileInfo finfo(_keyfile);
@@ -57,6 +62,7 @@ bool KeyClass::isRegisterd()
     quint64 validkey = st.st_mtime;
     return key==validkey;
 }
+
 
 QString KeyClass::userKey(bool crypt)
 {

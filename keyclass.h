@@ -9,6 +9,7 @@ class KeyClass : public QObject
     Q_OBJECT
 public:
     explicit KeyClass(QObject *parent = 0);
+    ~KeyClass();
 
 signals:
     void verifyTimeout();

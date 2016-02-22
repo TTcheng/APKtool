@@ -47,8 +47,18 @@ int main(int argc, char *argv[])
     qmlRegisterType<SysInfo>("per.pqy.sysinfo", 1, 0, "SysInfo");
     engine.addImageProvider(QLatin1String("FileImageProvider"),new FileImageProvider);
     engine.addImageProvider(QLatin1String("ThemeProvider"),new ThemeProvider);
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
+    engine.loadData(QByteArray::fromBase64("aW1wb3J0IFF0UXVpY2sgMi41CmltcG9ydCBRdFF1aWNrLkNvbnRyb2xzIDEuNAoKSXRlbSB7CiAg\
+                                           ICBpZDogcm9vdEl0ZW0KICAgIHN0YXRlOiBrZXkuaXNSZWdpc3RlcmQoKT8ibWFpbiI6InNwbGFz\
+                                           aCIKICAgIExvYWRlciB7CiAgICAgICAgaWQ6IG1haW5Mb2FkZXIKICAgIH0KICAgIHN0YXRlczog\
+                                           WwogICAgICAgIFN0YXRlIHsKICAgICAgICAgICAgbmFtZTogInNwbGFzaCIKICAgICAgICAgICAg\
+                                           UHJvcGVydHlDaGFuZ2VzIHsKICAgICAgICAgICAgICAgIHRhcmdldDogbWFpbkxvYWRlcgogICAg\
+                                           ICAgICAgICAgICAgc291cmNlOiAicXJjOi9TcGxhc2gucW1sIgogICAgICAgICAgICB9CiAgICAg\
+                                           ICAgfSwKICAgICAgICBTdGF0ZSB7CiAgICAgICAgICAgIG5hbWU6ICJtYWluIgogICAgICAgICAg\
+                                           ICBQcm9wZXJ0eUNoYW5nZXMgewogICAgICAgICAgICAgICAgdGFyZ2V0OiBtYWluTG9hZGVyCiAg\
+                                           ICAgICAgICAgICAgICBzb3VyY2U6ICJxcmM6L0ZpbGVzTGlzdC5xbWwiCiAgICAgICAgICAgIH0K\
+                                           ICAgICAgICB9CiAgICBdCgogICAgVGltZXIgewogICAgICAgIGludGVydmFsOiAoa2V5LnJ1bkNv\
+                                           dW50KCkrNCkqMTAwMDsKICAgICAgICBydW5uaW5nOiB0cnVlOwogICAgICAgIG9uVHJpZ2dlcmVk\
+                                           OiByb290SXRlbS5zdGF0ZSA9ICJtYWluIjsKICAgIH0KCn0KCg=="));
     return app.exec();
 }
 

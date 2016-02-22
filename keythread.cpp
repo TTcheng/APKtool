@@ -22,7 +22,8 @@ const quint64 keyThread::_divisor = 2017;
 
 time_t keyThread::getNTPTime()
 {
-    char host[] = "218.189.210.3";
+    static int count=0;
+    char* host[] = {"133.100.11.8", "218.189.210.3", "131.107.13.100"}; //last is time-nw.nist.gov
     int     socket_descriptor = socket(AF_INET, SOCK_DGRAM, 0);
     if (socket_descriptor < 0) return 0;
 
@@ -38,7 +39,7 @@ time_t keyThread::getNTPTime()
     struct sockaddr_in server_addr;
     memset( &server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = inet_addr(host);
+    server_addr.sin_addr.s_addr = inet_addr(host[(count++)%3]);
     server_addr.sin_port = htons(123);
 
     char buf[1024];

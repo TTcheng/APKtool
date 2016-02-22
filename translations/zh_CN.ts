@@ -259,7 +259,7 @@
     <message>
         <location filename="../FilesList.qml" line="342"/>
         <source>Verify timeout! Please try again.</source>
-        <translation type="unfinished">验证超时，请重试注册，或者切换其他网络再注册。</translation>
+        <translation>验证超时，请重试注册，或者切换其他网络再注册。</translation>
     </message>
     <message>
         <location filename="../FilesList.qml" line="645"/>

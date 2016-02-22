@@ -303,12 +303,17 @@ ApplicationWindow {
     }
 
 
+
+
     SysInfo {
         id: sysinfo
         onMeminfo:{
             meminfo.totaltext = total;
             meminfo.freetext = free;
             meminfo.rectHei = meminfo.height*ratio;
+        }
+        onCpuinfo: {
+            cpuinfo.text = info;
         }
     }
 
@@ -468,6 +473,17 @@ ApplicationWindow {
         z: 99
     }
 
+    Text {
+        id: cpuinfo
+        z: 99
+        opacity: 0.5
+        width: meminfo.width*2
+        anchors.bottom: root.bottom
+        anchors.top: meminfo.bottom
+        anchors.topMargin: 20
+        anchors.left: meminfo.left
+    }
+
     Image {
         id: root
         anchors.fill: parent
@@ -475,8 +491,6 @@ ApplicationWindow {
         source: "image://ThemeProvider/bg"
         opacity: 0.7
         property real scrollPos: 0
-
-
 
         ListView {
             id: list
@@ -493,7 +507,7 @@ ApplicationWindow {
                 id: listItem
                 height: root.height/15
                 width: root.width
-                source: "image://ThemeProvider/itembg"
+                //source: "image://ThemeProvider/itembg"
                 opacity: mouseArea.pressed?0.9:1.0
 
 
@@ -510,7 +524,6 @@ ApplicationWindow {
                 //                     GradientStop { position: 0.5; color: "#f3f3f3" }
                 //                     GradientStop { position: 1.0; color: "#eeeeee" }
                 //                 }
-
 
                 Image {
                     id: icon

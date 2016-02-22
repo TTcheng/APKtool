@@ -9,7 +9,6 @@ ApplicationWindow  {
     visible: true
     title: qsTr("Apktool")
     color: "grey"
-    signal toMain
     property int  count: key.runCount()+5
 
 
@@ -88,14 +87,6 @@ ApplicationWindow  {
                 context.fill();
                 context.stroke();
             }
-
-            Timer {
-                id: delayTimer
-                interval: win.count*1000-1000;
-                running: true;
-                onTriggered: win.toMain();
-            }
-
         }
 
         Timer {

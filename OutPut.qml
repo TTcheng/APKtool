@@ -51,7 +51,7 @@ Image {
         readOnly: true
         font.pixelSize: fontSize
         backgroundVisible: false
-        textColor: "white"
+//        textColor: "white"
     }
 
     MyButton {

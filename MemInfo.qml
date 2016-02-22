@@ -7,16 +7,8 @@ Item {
     property alias rectHei: rectangle2.height
     Rectangle {
         id: rectangle1
+        anchors.fill: parent
         opacity: 0.2
-
-        anchors.top: text1.bottom
-        anchors.topMargin: 0
-        anchors.right: parent.right
-        anchors.rightMargin: 0
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
         gradient: Gradient {
             GradientStop { position: 0.0; color: Qt.lighter("gray");}
             GradientStop { position: 1.0; color: "gray";}
@@ -24,10 +16,7 @@ Item {
 
         Rectangle {
             id: rectangle2
-            y: 198
-            height: 261
             opacity: 0.7
-
             anchors.right: parent.right
             anchors.rightMargin: 0
             anchors.left: parent.left

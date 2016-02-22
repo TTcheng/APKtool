@@ -58,6 +58,8 @@ Rectangle {
 	直接浏览/system/framework目录，单击framework-res.apk选择导入框架即可，不需要复制出来。
 oat2dex：
 	本功能可将安卓5.0及以上版本的系统odex文件转化为dex文件，转化需要系统文件boot.oat, 位于/system/framework/的某个子目录下。不再支持旧版本的odex转化。
+dex2odex :
+	安卓5.x以上不需要人工生成odex,合并之后的jar可直接替换原来的文件。替换前把对应的odex删除。
 任务管理：
 	所有添加的任务都是同步执行，所以不要添加太多任务。如果有任务在执行，右上角的齿轮会旋转，旋转速度与任务数正相关。
 内存状态：

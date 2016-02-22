@@ -13,7 +13,6 @@
         <file>ScrollBar.qml</file>
         <file>icons/unknown.png</file>
         <file>Splash.qml</file>
-        <file>main.qml</file>
         <file>icons/task_ok.png</file>
         <file>icons/task_error.png</file>
         <file>icons/task_running.png</file>

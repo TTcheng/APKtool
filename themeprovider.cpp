@@ -22,7 +22,7 @@ QPixmap ThemeProvider::requestPixmap(const QString& id, QSize* size, const QSize
          pixmap.load(settings.value("theme/background").toString()=="custom"?QDir::homePath()+"/bg":":/icons/bg.png");
 
      else if(id=="itembg")
-         pixmap.load(settings.value("theme/itembackground").toString()=="custom"?QDir::homePath()+"/itembg":":/icons/itembg.png");
+         pixmap.load(settings.value("theme/itembackground").toString()=="custom"?QDir::homePath()+"/itembg":"");
 
      else if(id=="buttonbg")
          pixmap.load(settings.value("theme/buttonbackground").toString()=="custom"?QDir::homePath()+"/buttonbg":":/icons/buttonbg.png");
