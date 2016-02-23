@@ -414,7 +414,7 @@ ApplicationWindow {
         MouseArea {
             anchors.fill: parent
             onClicked: showhideSettings()
-            onPressAndHold: {mc.genKey();meminfo.visible = ! meminfo.visible; }
+            onPressAndHold: {dialogLoader.setSource("qrc:/Options.qml"); }
         }
     }
     Timer {

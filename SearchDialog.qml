@@ -14,6 +14,7 @@ Item {
         onSearchModelChanged: {
             msgBox.msgStr = qsTr("Search finish!");
             msgBox.txtOpacity = 1.0;
+            bi.running = false;
             if(msgBoxTimer.running)
                 msgBoxTimer.stop();
             msgBoxTimer.start();
@@ -31,6 +32,14 @@ Item {
         anchors.fill: parent
         opacity: 0.9
         source: "qrc:/icons/bg.png"
+
+        BusyIndicator {
+            id: bi
+            anchors.centerIn: parent
+            running: false
+            visible: running
+
+        }
 
         Rectangle {
             id: msgBox
@@ -100,6 +109,7 @@ Item {
                         _cmd += _text;
                     }
                     mc.searchFiles(_cmd);
+                    bi.running = true;
                 }
 
 
