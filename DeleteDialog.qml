@@ -42,6 +42,6 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: parent.width/20
         font.bold: true
-        color: "white"
+        color: mc.colorValue("user/textColor")
     }
 }

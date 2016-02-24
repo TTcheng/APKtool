@@ -10,7 +10,7 @@ Rectangle {
         anchors.fill: parent
         spacing: 1
         property int btnWid: width
-        property int btnHei: (height-4)/5
+        property int btnHei: (height-5)/6
 
 
         MyButton {
@@ -41,14 +41,15 @@ Rectangle {
             text: qsTr("Theme")
             onClicked:setting.clicked(4)
         }
-/*
-        RootSwitch {
+
+        MyButton {
             width: parent.btnWid
             height: parent.btnHei
-
+            text: qsTr("Settings")
+            onClicked:setting.clicked(5)
 
         }
-*/
+
         MyButton {
             width: parent.btnWid
             height: parent.btnHei

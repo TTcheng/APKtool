@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QStringList>
 
+
 #if defined(Q_OS_ANDROID)
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
@@ -21,13 +22,15 @@ bool cmpFileModel(QObject *_a, QObject *_b)
 
 MainClass::MainClass(QObject *parent) : QObject(parent), searchProc(NULL)
 {
-    _currentPath = st.value("user/lastpath", "/").toString();
+    _currentPath = st.value("user/lastPath", "/").toString();
     _aapt = st.value("user/aapt","aapt6.0").toString();
-    _shell = "sh";
-    if(QFileInfo("/system/.nosu").exists()||QFileInfo("/sdcard/.nosu").exists())
-         ;
-    else if(QFileInfo("/system/bin/su").exists()||QFileInfo("/system/xbin/su").exists()||QFileInfo("/bin/su").exists())
+//    _shell = "sh";
+    if(QFileInfo("/system/bin/su").exists()||QFileInfo("/system/xbin/su").exists()||QFileInfo("/bin/su").exists())
         _shell = "su";
+    if(st.value("user/root", _shell=="su"?true:false).toBool())
+        _shell = "su";
+    else
+        _shell = "sh";
 
     refreshCurrentPath();
     connect(this, SIGNAL(copyFinished()), this, SLOT(refreshCurrentPath()));
@@ -46,7 +49,7 @@ MainClass::MainClass(QObject *parent) : QObject(parent), searchProc(NULL)
 
 MainClass::~MainClass()
 {
-    st.setValue("user/lastpath", _currentPath);
+    st.setValue("user/lastPath", _currentPath);
     st.setValue("user/aapt", _aapt);
 }
 
@@ -66,6 +69,7 @@ void MainClass::refreshCurrentPath()
     qDeleteAll(fList);
     fList.clear();
     QByteArray output = listProc.readAllStandardOutput();
+
 //    qWarning()<<output;
 //    qWarning()<< listProc.readAllStandardError();
     QTextStream out(&output);
@@ -102,7 +106,7 @@ void MainClass::refreshCurrentPath()
 
         fList.append(new FileModelItem(filename, fileinfo, sortTag, symtarget));
     }
-
+    if(fList.count()>2)
     std::sort(fList.begin()+1, fList.end(), cmpFileModel);
 
     emit fileModelChanged();
@@ -290,12 +294,12 @@ int MainClass::taskNum()
 
 void MainClass::genKey()
 {
-
+/*
     _key = new keyThread;
     connect(_key, SIGNAL(gotKey(QString)), this, SIGNAL(gotKey(QString)));
     connect(_key, SIGNAL(finished()), this, SLOT(deleteKey()));
     _key->start();
-
+*/
 }
 
 void MainClass::deleteKey()
@@ -547,6 +551,8 @@ void MainClass::setTheme(QString type, QString fname)
 
 int MainClass::intValue(QString key)
 {
+    if(key=="user/itemNum")
+        return st.value(key, 15).toInt();
     return st.value(key).toInt();
 }
 
@@ -560,6 +566,13 @@ bool MainClass::boolValue(QString key)
     return st.value(key).toBool();
 }
 
+QColor MainClass::colorValue(QString key)
+{
+    QColor color(st.value(key, "#000000").toString());
+    if(!color.isValid())
+        color = "#000000";
+    return color;
+}
 
 void MainClass::setIntValue(QString key, int value)
 {
@@ -574,4 +587,17 @@ void  MainClass::setStrValue(QString key, QString value)
 void MainClass::setBoolValue(QString key, bool value)
 {
     st.setValue(key,value);
+}
+
+void MainClass::setColorValue(QString key, QColor value)
+{
+    st.setValue(key, value.name());
+}
+
+void MainClass::setShell(bool root)
+{
+    if(root)
+        _shell = "su";
+    else
+        _shell = "sh";
 }

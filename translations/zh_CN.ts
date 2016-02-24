@@ -85,52 +85,52 @@
 <context>
     <name>DecApk</name>
     <message>
-        <location filename="../DecApk.qml" line="31"/>
+        <location filename="../DecApk.qml" line="32"/>
         <source>Decompile All</source>
         <translation>反编译全部</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="43"/>
+        <location filename="../DecApk.qml" line="45"/>
         <source>Decompile classes.dex</source>
         <translation>反编译classes.dex</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="54"/>
+        <location filename="../DecApk.qml" line="56"/>
         <source>Decompile resource</source>
         <translation>反编译资源</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="76"/>
+        <location filename="../DecApk.qml" line="78"/>
         <source>don&apos;t write out debug info (.local, .param, .line, etc.)</source>
         <translation>不添加调试信息(.local, .param, .line等)</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="100"/>
+        <location filename="../DecApk.qml" line="103"/>
         <source>Use if there was an error and some resources were dropped, e.g.You will have to fix them manually before building.</source>
         <translation>出错仍然继续反编译。</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="123"/>
+        <location filename="../DecApk.qml" line="127"/>
         <source>Keeps files to closest to original as possible. Prevents rebuild.</source>
         <translation>尽可能地保持与源文件一致。(无法回编译).</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="136"/>
+        <location filename="../DecApk.qml" line="141"/>
         <source>Input extra apktool options here</source>
         <translation>额外的apktool参数</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="161"/>
+        <location filename="../DecApk.qml" line="166"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="173"/>
+        <location filename="../DecApk.qml" line="178"/>
         <source>Decompile</source>
         <translation>反编译</translation>
     </message>
     <message>
-        <location filename="../DecApk.qml" line="200"/>
+        <location filename="../DecApk.qml" line="205"/>
         <source>run as root</source>
         <translation>以root权限执行</translation>
     </message>
@@ -161,12 +161,12 @@
         <translation>请选择一个文件</translation>
     </message>
     <message>
-        <location filename="../FileDialog.qml" line="40"/>
+        <location filename="../FileDialog.qml" line="41"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../FileDialog.qml" line="54"/>
+        <location filename="../FileDialog.qml" line="55"/>
         <source>Choose</source>
         <translation>选择</translation>
     </message>
@@ -179,33 +179,33 @@
         <translation>Apktool</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="233"/>
+        <location filename="../FilesList.qml" line="228"/>
         <source>Invalid length of your key!</source>
         <translation>注册码长度太短！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="259"/>
+        <location filename="../FilesList.qml" line="254"/>
         <source>Can not copy to same path!</source>
         <translation>不能复制到同一目录！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="268"/>
+        <location filename="../FilesList.qml" line="263"/>
         <source>Can not cut to same path!</source>
         <translation>不能剪切到同一目录！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="284"/>
-        <location filename="../FilesList.qml" line="290"/>
+        <location filename="../FilesList.qml" line="279"/>
+        <location filename="../FilesList.qml" line="285"/>
         <source>Added to task list!</source>
         <translation>已添加到任务队列！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="297"/>
+        <location filename="../FilesList.qml" line="292"/>
         <source>cost time: %1</source>
         <translation>耗时: %1</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="302"/>
+        <location filename="../FilesList.qml" line="297"/>
         <source>This page is showed because of register bug.
 %1</source>
         <translation>注册过程出现了一些问题，请联系作者。
@@ -262,22 +262,22 @@
         <translation>验证超时，请重试注册，或者切换其他网络再注册。</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="645"/>
+        <location filename="../FilesList.qml" line="657"/>
         <source>Select All</source>
         <translation>全选</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="654"/>
+        <location filename="../FilesList.qml" line="666"/>
         <source>Reverse Selection</source>
         <translation>反选</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="662"/>
+        <location filename="../FilesList.qml" line="674"/>
         <source>Combine</source>
         <translation>合并apk/dex</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="671"/>
+        <location filename="../FilesList.qml" line="683"/>
         <source>Finish Selection</source>
         <translation>完成选择</translation>
     </message>
@@ -309,14 +309,52 @@
     </message>
 </context>
 <context>
+    <name>Options</name>
+    <message>
+        <location filename="../Options.qml" line="35"/>
+        <source>Settings</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="52"/>
+        <source>show memory info</source>
+        <translation>显示内存信息</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="69"/>
+        <source>show cpu info</source>
+        <translation>显示cpu使用率</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="87"/>
+        <source>visible file items(7-25)</source>
+        <translation>可见文件数</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="99"/>
+        <source>text color</source>
+        <translation>字体颜色</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="113"/>
+        <source>Back</source>
+        <translation>返回</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="126"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+</context>
+<context>
     <name>OutPut</name>
     <message>
-        <location filename="../OutPut.qml" line="61"/>
+        <location filename="../OutPut.qml" line="64"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../OutPut.qml" line="73"/>
+        <location filename="../OutPut.qml" line="76"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -324,32 +362,32 @@
 <context>
     <name>RecApk</name>
     <message>
-        <location filename="../RecApk.qml" line="43"/>
+        <location filename="../RecApk.qml" line="44"/>
         <source>Copies original AndroidManifest.xml and META-INF.</source>
         <translation>保留原始签名和AndroidManiest.xml.</translation>
     </message>
     <message>
-        <location filename="../RecApk.qml" line="68"/>
+        <location filename="../RecApk.qml" line="70"/>
         <source>Skip changes detection and build all files.</source>
         <translation>跳过修改检测，强制编译所有文件。</translation>
     </message>
     <message>
-        <location filename="../RecApk.qml" line="82"/>
+        <location filename="../RecApk.qml" line="85"/>
         <source>Input extra apktool options here</source>
         <translation>额外的apktool参数</translation>
     </message>
     <message>
-        <location filename="../RecApk.qml" line="106"/>
+        <location filename="../RecApk.qml" line="109"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../RecApk.qml" line="120"/>
+        <location filename="../RecApk.qml" line="123"/>
         <source>Recompile</source>
         <translation>回编译</translation>
     </message>
     <message>
-        <location filename="../RecApk.qml" line="174"/>
+        <location filename="../RecApk.qml" line="177"/>
         <source>run as root</source>
         <translation>以root权限执行</translation>
     </message>
@@ -403,37 +441,37 @@ key: %1</source>
         <translation>搜索完毕！</translation>
     </message>
     <message>
-        <location filename="../SearchDialog.qml" line="64"/>
+        <location filename="../SearchDialog.qml" line="73"/>
         <source>Case</source>
         <translation>大小写</translation>
     </message>
     <message>
-        <location filename="../SearchDialog.qml" line="75"/>
+        <location filename="../SearchDialog.qml" line="84"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../SearchDialog.qml" line="82"/>
+        <location filename="../SearchDialog.qml" line="91"/>
         <source>Input keyword, please.</source>
         <translation>请输入关键词。</translation>
     </message>
     <message>
-        <location filename="../SearchDialog.qml" line="114"/>
+        <location filename="../SearchDialog.qml" line="124"/>
         <source>Back</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../SearchDialog.qml" line="197"/>
+        <location filename="../SearchDialog.qml" line="207"/>
         <source>Search content or file name</source>
         <translation>搜索内容</translation>
     </message>
     <message>
-        <location filename="../SearchDialog.qml" line="212"/>
+        <location filename="../SearchDialog.qml" line="222"/>
         <source>by name</source>
         <translation>根据文件名</translation>
     </message>
     <message>
-        <location filename="../SearchDialog.qml" line="225"/>
+        <location filename="../SearchDialog.qml" line="235"/>
         <source>by content</source>
         <translation>根据文件内容</translation>
     </message>
@@ -461,7 +499,12 @@ key: %1</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="56"/>
+        <location filename="../Settings.qml" line="48"/>
+        <source>Settings</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../Settings.qml" line="57"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>
@@ -474,8 +517,8 @@ key: %1</source>
         <translation>Apktool</translation>
     </message>
     <message>
-        <location filename="../Splash.qml" line="22"/>
-        <location filename="../Splash.qml" line="106"/>
+        <location filename="../Splash.qml" line="21"/>
+        <location filename="../Splash.qml" line="97"/>
         <source>unactivated version, Please wait for %1 seconds!</source>
         <translation>未注册版本，需要等待%1秒！</translation>
     </message>
@@ -521,42 +564,42 @@ key: %1</source>
 <context>
     <name>Themes</name>
     <message>
-        <location filename="../Themes.qml" line="55"/>
-        <location filename="../Themes.qml" line="82"/>
-        <location filename="../Themes.qml" line="108"/>
+        <location filename="../Themes.qml" line="56"/>
+        <location filename="../Themes.qml" line="83"/>
+        <location filename="../Themes.qml" line="109"/>
         <source>custom</source>
         <translation>自定义</translation>
     </message>
     <message>
-        <location filename="../Themes.qml" line="67"/>
-        <location filename="../Themes.qml" line="94"/>
-        <location filename="../Themes.qml" line="120"/>
+        <location filename="../Themes.qml" line="68"/>
+        <location filename="../Themes.qml" line="95"/>
+        <location filename="../Themes.qml" line="121"/>
         <source>preset</source>
         <translation>预设</translation>
     </message>
     <message>
-        <location filename="../Themes.qml" line="164"/>
-        <location filename="../Themes.qml" line="195"/>
+        <location filename="../Themes.qml" line="165"/>
+        <location filename="../Themes.qml" line="197"/>
         <source>Test Text</source>
         <translation>测试文字</translation>
     </message>
     <message>
-        <location filename="../Themes.qml" line="204"/>
+        <location filename="../Themes.qml" line="207"/>
         <source>This is the preview, your changes will be applied after relaunch this app.</source>
         <translation>这里是预览界面，您的修改将在软件重启后生效。</translation>
     </message>
     <message>
-        <location filename="../Themes.qml" line="251"/>
+        <location filename="../Themes.qml" line="255"/>
         <source>background</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../Themes.qml" line="262"/>
+        <location filename="../Themes.qml" line="266"/>
         <source>file item background</source>
         <translation>文件背景</translation>
     </message>
     <message>
-        <location filename="../Themes.qml" line="273"/>
+        <location filename="../Themes.qml" line="277"/>
         <source>button background</source>
         <translation>按钮背景</translation>
     </message>

@@ -22,7 +22,7 @@ Image {
         id: name
         anchors.centerIn: parent
         wrapMode: Text.WrapAnywhere
-        color: "black"
+        color: mc.colorValue("user/textColor")
     }
 
 

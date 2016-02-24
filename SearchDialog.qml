@@ -49,7 +49,7 @@ Item {
             property alias txtOpacity: msg.opacity
             Text {
                 id: msg
-                color: "#FF8000"
+                color: mc.colorValue("user/textColor")
                 opacity: 0
                 anchors.centerIn: parent
                 wrapMode: Text.WrapAnywhere
@@ -146,7 +146,7 @@ Item {
             model: mc.searchModel
             delegate: Rectangle {
                 id: listItem
-                height: listView1.height/15
+                height: listView1.height/mc.intValue("user/itemNum")
                 width: listView1.width
                 MouseArea {
                     id:mouseArea
@@ -170,7 +170,7 @@ Item {
                 Text {
                     id: t1
                     text: model.modelData.name
-                    color: "white"
+                    color: mc.colorValue("user/textColor")
                     height: parent.height*2/3
                     width: parent.width - icon.width - listItem.height/5
                     font.pixelSize: height*3/7

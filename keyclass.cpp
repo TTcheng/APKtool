@@ -104,7 +104,7 @@ void KeyClass::_verifyKey(QString _validKey)
     for(int j=validKey.length()-2;j>0;j-=3)
         validKey.remove(j, 1);
     _valid = validKey.toLongLong();
-    if(llabs(_user-_valid)<3600L*24){
+    if(llabs(_user-_valid)<3600L*24-1){
         QSettings settings;
         settings.setValue("key/userkey", _userKey);
         createKeyFile();

@@ -16,6 +16,6 @@ Item {
         text: qsTr("activated version\nkey: %1").arg(key.userKey(false))
         font.pixelSize: parent.width/20
         font.bold: true
-        color: "orange"
+        color: mc.colorValue("user/textColor")
     }
 }

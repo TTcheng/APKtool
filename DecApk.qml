@@ -8,6 +8,7 @@ Item {
     signal decapk(string options, bool rootPerm)
     property int itemHeightMargin: height/20
     property int  fontSize: width/40
+    property color textColor: mc.colorValue("user/textColor")
     MouseArea {
         anchors.fill: parent
     }
@@ -36,6 +37,7 @@ Item {
                     exclusiveGroup: tabPositionGroup
                     property int tag: 0
                     checked: true
+
                 }
 
                 RadioButton {
@@ -82,6 +84,7 @@ Item {
             textFormat: Text.PlainText
             wrapMode: Text.WordWrap
             font.pixelSize: root.fontSize
+            color: root.textColor
         }
 
         CheckBox {
@@ -105,6 +108,7 @@ Item {
             anchors.leftMargin: 20
             textFormat: Text.PlainText
             wrapMode: Text.WordWrap
+            color: root.textColor
         }
 
         CheckBox {
@@ -128,6 +132,7 @@ Item {
             anchors.leftMargin: 20
             textFormat: Text.PlainText
             wrapMode: Text.WordWrap
+            color: root.textColor
         }
 
         TextField {
@@ -142,7 +147,7 @@ Item {
             anchors.leftMargin: 20
 //            font.pixelSize: 12
             style: TextFieldStyle {
-                    textColor: "orange"
+                    textColor: root.textColor
                     background: Rectangle {
                         radius: 2
                         opacity: 0.1

@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4
 Image {
     id: root
     property int  fontSize: width/40 < 20?20:width/40
+    property color textColor: mc.colorValue("user/textColor")
     property alias durationText: duration.text
     property alias cmdText: command.text
     property alias outputText: output.text
@@ -20,6 +21,7 @@ Image {
         anchors.horizontalCenter: parent.horizontalCenter
         textFormat: Text.PlainText
         wrapMode: Text.WordWrap
+        color: root.textColor
         font.pixelSize: root.fontSize*2
     }
 
@@ -34,6 +36,7 @@ Image {
         textFormat: Text.PlainText
         wrapMode: Text.WordWrap
         font.pixelSize: fontSize
+        color: root.textColor
     }
 
     TextArea {
@@ -51,7 +54,7 @@ Image {
         readOnly: true
         font.pixelSize: fontSize
         backgroundVisible: false
-//        textColor: "white"
+        textColor: root.textColor
     }
 
     MyButton {

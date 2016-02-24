@@ -10,6 +10,7 @@ ApplicationWindow {
     width: 480
     height: 800
     title: qsTr("Apktool")
+    property color textColor: mc.colorValue("user/textColor")
     onClosing: {
         close.accepted = false;
         if(dialogLoader.source!=""&&dialogLoader.source!="qrc:/CopyDialog.qml"){
@@ -117,7 +118,7 @@ ApplicationWindow {
             settings.opacity = 1;
             settings.x = root.width/2;
             settings.width = root.width/2-seticon.width;
-            settings.height = root.height*5/15;
+            settings.height = root.height*6/15;
         }
         else{
             settings.x = seticon.x;
@@ -183,12 +184,6 @@ ApplicationWindow {
             dialogLoader.setSource("qrc:/NewDialog.qml");
         }
 
-        else if(num ===_edit){
-            //            dialogLoader.setSource("qrc:/Editor.qml");
-            //mainwindow.parent.root.visible = false;
-            //            mc.edit(dialogLoader.origName);
-
-        }
         else if(num===_search){
             dialogLoader.setSource("qrc:/SearchDialog.qml",{"parentDir":dialogLoader.origName});
         }
@@ -219,7 +214,7 @@ ApplicationWindow {
             dialogLoader.setSource("qrc:/Themes.qml");
         }
         else if(btn===5){
-//            dialogLoader.setSource("qrc:/DataMove.qml");
+            dialogLoader.setSource("qrc:/Options.qml");
         }
 
         else if(btn===6){
@@ -370,6 +365,8 @@ ApplicationWindow {
         onNewfilebtn: newFile(newName, type);
         onDecapk: decApk(dialogLoader.origName, options, rootPerm);
         onRecapk: recApk(dialogLoader.origName, options, aapt, rootPerm);
+        onSwitchMem: meminfo.visible = on;
+        onSwitchCpu: cpuinfo.visible = on;
         //        onBugreport: bugReport();
     }
 
@@ -381,7 +378,7 @@ ApplicationWindow {
         property alias txtOpacity: msg.opacity
         Text {
             id: msg
-            color: "#FF8000"
+            color: mainwindow.textColor
             opacity: 0
             anchors.centerIn: parent
             wrapMode: Text.WrapAnywhere
@@ -414,7 +411,7 @@ ApplicationWindow {
         MouseArea {
             anchors.fill: parent
             onClicked: showhideSettings()
-            onPressAndHold: {dialogLoader.setSource("qrc:/Options.qml"); }
+            onPressAndHold: {mc.genKey();}
         }
     }
     Timer {
@@ -423,7 +420,7 @@ ApplicationWindow {
         repeat: true
         running: true
         triggeredOnStart: true;
-        onTriggered: { seticon.rotation+=mc.taskNum*18; sysinfo.memoryInfo(); }
+        onTriggered: { seticon.rotation+=mc.taskNum*18;}
     }
 
     Settings {
@@ -471,17 +468,19 @@ ApplicationWindow {
         anchors.right: parent.right
         anchors.rightMargin: width
         z: 99
+        visible: mc.boolValue("user/memInfo")
     }
 
     Text {
         id: cpuinfo
         z: 99
         opacity: 0.5
-        width: meminfo.width*2
+        width: meminfo.width
         anchors.bottom: root.bottom
         anchors.top: meminfo.bottom
         anchors.topMargin: 20
         anchors.left: meminfo.left
+        visible: mc.boolValue("user/cpuInfo")
     }
 
     Image {
@@ -505,7 +504,7 @@ ApplicationWindow {
             model: mc.fileModel
             delegate: Image {
                 id: listItem
-                height: root.height/15
+                height: root.height/mc.intValue("user/itemNum");
                 width: root.width
                 //source: "image://ThemeProvider/itembg"
                 opacity: mouseArea.pressed?0.9:1.0
@@ -577,7 +576,7 @@ ApplicationWindow {
                 Text {
                     id: t1
                     text: model.modelData.name
-                    color: "black"
+                    color: mainwindow.textColor
                     height: parent.height*2/3
                     font.pixelSize: height*4/7
                     anchors.left: icon.right
@@ -587,7 +586,7 @@ ApplicationWindow {
                     anchors.bottom: parent.bottom
                     anchors.left: icon.right
                     text: model.modelData.info
-                    color: "black"
+                    color: mainwindow.textColor
                     height: parent.height*1/3
                     font.pixelSize: height*5/7
 

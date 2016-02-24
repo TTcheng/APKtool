@@ -1,18 +1,23 @@
 #include "sysinfo.h"
-#include <unistd.h>
-#include <fstream>
-#include <iostream>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
-#include <QThread>
-#include <QDebug>
 
 SysInfo::SysInfo(QObject *parent) : QObject(parent)
 {
-
+    connect(&mi, SIGNAL(meminfo(QString,QString,qreal)), this, SIGNAL(meminfo(QString,QString,qreal)));
+    connect(&ci, SIGNAL(cpuinfo(QString)), this, SIGNAL(cpuinfo(QString)));
+    connect(&timer, SIGNAL(timeout()), this, SLOT(getInfo()));
+    timer.setSingleShot(false);
+    timer.start(3000);
 }
 
+void SysInfo::getInfo()
+{
+    if(st.value("user/memInfo").toBool());
+        mi.start();
+    if(st.value("user/cpuInfo").toBool());
+        ci.start();
+}
+
+/*
 void SysInfo::memoryInfo()
 {
     std::string tmp;
@@ -84,3 +89,4 @@ void SysInfo::cpuInfo()
    }
 
 }
+*/

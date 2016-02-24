@@ -29,6 +29,7 @@ Image {
         anchors.topMargin: 0
         anchors.horizontalCenter: parent.horizontalCenter
         textFormat: Text.PlainText
+        color: mc.colorValue("user/textColor")
 //        font.pixelSize: 12
     }
 
@@ -95,7 +96,7 @@ Image {
             }
             Text {
                 text: model.modelData.name
-                color: "black"
+                color: mc.colorValue("user/textColor")
                 height: parent.height*2/3
                 font.pixelSize: height*4/7
                 anchors.left: icon.right

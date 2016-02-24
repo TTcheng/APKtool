@@ -9,6 +9,7 @@
 //#include <QDebug>
 #include <QDir>
 #include <QSettings>
+#include <QColor>
 
 
 #include "filemodelitem.h"
@@ -74,6 +75,7 @@ public:
    Q_INVOKABLE void rename(QString oldName, QString newName);
    Q_INVOKABLE bool noItemSelected();
    Q_INVOKABLE bool hasRoot();
+   Q_INVOKABLE void setShell(bool root);
 
    Q_INVOKABLE void createNewFile(QString name, bool type);
    Q_INVOKABLE void decApk(QString apkFile, QString options, bool rootPerm = false);
@@ -95,10 +97,12 @@ public:
     Q_INVOKABLE int intValue(QString key);
     Q_INVOKABLE QString strValue(QString key);
     Q_INVOKABLE bool boolValue(QString key);
+    Q_INVOKABLE QColor colorValue(QString key);
 
     Q_INVOKABLE void setIntValue(QString key, int value);
     Q_INVOKABLE void setStrValue(QString key, QString value);
     Q_INVOKABLE void setBoolValue(QString key, bool value);
+    Q_INVOKABLE void setColorValue(QString key, QColor value);
 
 
 private slots:

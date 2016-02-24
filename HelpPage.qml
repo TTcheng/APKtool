@@ -77,6 +77,7 @@ dex文件会自动重命名为classes.dex再打包。不支持打包其他文件
             readOnly: true
             font.pixelSize: root.width/40
             wrapMode: TextInput.WrapAnywhere
+            color: mc.colorValue("user/textColor")
         }
     }
 

@@ -7,6 +7,7 @@ Rectangle {
     color: "black"
     signal nobtn
     property int itemMargin: height/18
+    property color textColor: mc.colorValue("user/textColor")
 
     function fileDialog(type){
         //type means bg/buttonbg/itembg
@@ -165,6 +166,7 @@ Rectangle {
                 height: parent.height*2/3
                 font.pixelSize: height*4/7
                 anchors.left: image3.right
+                color: root.textColor
             }
         }
 
@@ -196,6 +198,7 @@ Rectangle {
                 height: parent.height*2/3
                 font.pixelSize: height*4/7
                 anchors.left: image5.right
+                color: root.textColor
             }
         }
 
@@ -205,6 +208,7 @@ Rectangle {
             font.pixelSize: parent.width/10
             width: parent.width
             wrapMode: Text.Wrap
+            color: root.textColor
         }
 
         MyButton {

@@ -64,7 +64,7 @@ Image {
                 }
                 wrapMode: Text.WordWrap
                 text: model.modelData.cmd
-                color: "black"
+                color: mc.colorValue("user/textColor")
                 font.pixelSize: parent.height/6
             }
         }

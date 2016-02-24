@@ -54,7 +54,7 @@ Item {
         cursorPosition: length
         font.pixelSize: parent.width/20
         style: TextFieldStyle {
-            textColor: "orange"
+            textColor: mc.colorValue("user/textColor")
             background: Rectangle {
                 radius: 2
                 opacity: 0.1

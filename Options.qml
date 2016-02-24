@@ -4,14 +4,18 @@ import QtQuick.Controls 1.2
 
 ScrollView {
     id: page
-    implicitWidth: 640
-    implicitHeight: 200
+    //    implicitWidth: 640
+    //    implicitHeight: 200
+    signal nobtn
+    signal switchMem(bool on)
+    signal switchCpu(bool on);
+    horizontalScrollBarPolicy: 0
+    property bool memWid
 
-    horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
-    Rectangle {
+    Image {
         id: content
-
+        source: "image://ThemeProvider/bg"
         width: Math.max(page.viewport.width, grid.implicitWidth + 2 * grid.rowSpacing)
         height: Math.max(page.viewport.height, grid.implicitHeight + 2 * grid.columnSpacing)
 
@@ -28,42 +32,33 @@ ScrollView {
             columns: page.width < page.height ? 1 : 2
 
             GroupBox {
-                title: "CheckBox"
-                Layout.fillWidth: true
-                ColumnLayout {
-                    anchors.fill: parent
-                    CheckBox { text: "E-mail"; checked: true }
-                    CheckBox { text: "Calendar"; checked: true }
-                    CheckBox { text: "Contacts" }
-                }
-            }
-
-            GroupBox {
-                title: "RadioButton"
-                Layout.fillWidth: true
-                ColumnLayout {
-                    anchors.fill: parent
-                    ExclusiveGroup { id: radioGroup }
-                    RadioButton { text: "Portrait"; exclusiveGroup: radioGroup }
-                    RadioButton { text: "Landscape"; exclusiveGroup: radioGroup }
-                    RadioButton { text: "Automatic"; exclusiveGroup: radioGroup; checked: true }
-                }
-            }
-
-            GroupBox {
-                title: "Switch"
+                title: qsTr("Settings")
                 Layout.fillWidth: true
                 Layout.columnSpan: grid.columns
                 ColumnLayout {
                     anchors.fill: parent
                     RowLayout {
                         Label { text: "ROOT"; Layout.fillWidth: true }
-                        Switch { checked: true }
+                        Switch {
+                            id: rootSwitch;
+                            checked: mc.boolValue("user/root");
+                            onClicked: {
+                                mc.setBoolValue("user/root", checked);
+                                mc.setShell(checked);
+                            }
+                        }
                     }
                     RowLayout {
                         Label { text: qsTr("show memory info"); Layout.fillWidth: true }
 
-                        Switch { checked: false }
+                        Switch {
+                            id: memSwitch;
+                            checked: mc.boolValue("user/memInfo");
+                            onClicked: {
+                                page.switchMem(checked);
+                                mc.setBoolValue("user/memInfo", checked)
+                            }
+                        }
                     }
 
                     RowLayout {
@@ -74,7 +69,14 @@ ScrollView {
                             text: qsTr("show cpu info")
                             Layout.fillWidth: true
                         }
-                        Switch { checked: false }
+                        Switch {
+                            id:cpuSwitch;
+                            checked: mc.boolValue("user/cpuInfo");
+                            onClicked: {
+                                page.switchCpu(checked);
+                                mc.setBoolValue("user/cpuInfo", checked)
+                            }
+                        }
                     }
 
                     RowLayout {
@@ -82,10 +84,10 @@ ScrollView {
                         height: 100
 
                         Label {
-                            text: qsTr("visible file items number")
+                            text: qsTr("visible file items(7-25)")
                             Layout.fillWidth: true
                         }
-                        SpinBox { value: 99; Layout.fillWidth: false; }
+                        SpinBox { id: itemnum; value: mc.intValue("user/itemNum"); minimumValue: 7; maximumValue: 25; Layout.fillWidth: false }
                     }
 
                     RowLayout {
@@ -97,7 +99,34 @@ ScrollView {
                             text: qsTr("text color")
                             Layout.fillWidth: true
                         }
-                        TextField { text: "#000000"; Layout.fillWidth: false}
+                        TextField { id: txtcolor; text: mc.colorValue("user/textColor"); Layout.fillWidth: false}
+                    }
+                }
+            }
+
+            RowLayout {
+                width: 100
+                height: 100
+
+                Button {
+                    id: button1
+                    text: qsTr("Back")
+                    onClicked: page.nobtn()
+                }
+
+                Item {
+                    id: item1
+                    width: 200
+                    height: 200
+                    Layout.fillWidth: true
+                }
+
+                Button {
+                    id: button2
+                    text: qsTr("Save")
+                    onClicked: {
+                        mc.setIntValue("user/itemNum", itemnum.value);
+                        mc.setColorValue("user/textColor", txtcolor.getText(0, txtcolor.length));
                     }
                 }
             }

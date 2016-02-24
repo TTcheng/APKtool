@@ -5,6 +5,7 @@ Item {
     property alias totaltext: text1.text
     property alias freetext: text2.text
     property alias rectHei: rectangle2.height
+    property color textColor: mc.colorValue("user/textColor")
     Rectangle {
         id: rectangle1
         anchors.fill: parent
@@ -32,13 +33,13 @@ Item {
 
     Text {
         id: text1
-        text: "Text"
         opacity: 0.4
         textFormat: Text.PlainText
         anchors.left: parent.left
         anchors.leftMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
+        color: item1.textColor
         //        font.pixelSize: 12
     }
 
@@ -46,13 +47,13 @@ Item {
         id: text2
         x: 0
         y: 21
-        text: "Text"
         anchors.top: rectangle1.top
         anchors.topMargin: rectangle1.height - rectangle2.height
         opacity: 0.4
         anchors.left: parent.left
         anchors.leftMargin: 0
         textFormat: Text.PlainText
+        color: item1.textColor
         //            font.pixelSize: 12
     }
 

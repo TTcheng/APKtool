@@ -23,7 +23,7 @@ ApplicationWindow  {
             anchors.bottomMargin: (parent.height-canvas.height)/2
             anchors.horizontalCenter: parent.horizontalCenter
             font.pixelSize: parent.width/30
-            color: "yellow"
+            color: mc.colorValue("user/textColor")
         }
         Canvas {
             id:canvas
