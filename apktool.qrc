@@ -36,5 +36,8 @@
         <file>FileDialog.qml</file>
         <file>MemInfo.qml</file>
         <file>Options.qml</file>
+        <file>ProcList.qml</file>
+        <file>SignalList.qml</file>
+        <file>main.qml</file>
     </qresource>
 </RCC>

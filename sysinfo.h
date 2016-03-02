@@ -95,7 +95,8 @@ public:
                     if(i == 4 || i == 5)
                         cpu_idle += splitStr2[i].toLong() - splitStr1[i].toLong();
                }
-
+               if(cpu_total==0)
+                   return;
                info += splitStr1[0] + ": " + QString::number((cpu_total - cpu_idle) * 100 / cpu_total) + "%\n";
            }
 
@@ -111,6 +112,7 @@ class SysInfo : public QObject
     Q_OBJECT
 public:
     explicit SysInfo(QObject *parent = 0);
+    ~SysInfo();
     //Q_INVOKABLE void memoryInfo();
     //Q_INVOKABLE void cpuInfo();
 

@@ -17,6 +17,12 @@ void SysInfo::getInfo()
         ci.start();
 }
 
+SysInfo::~SysInfo()
+{
+    mi.terminate();
+    ci.terminate();
+}
+
 /*
 void SysInfo::memoryInfo()
 {

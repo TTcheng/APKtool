@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.5
 
 
 
@@ -10,7 +10,7 @@ Image {
     signal nobtn
     function createOutput(cmd, output, duration){
         var compoment = Qt.createComponent("qrc:/OutPut.qml");
-        var obj = compoment.createObject(root, {"x":0, "y":100, "width": mainwindow.width, "height": mainwindow.height-200,
+        var obj = compoment.createObject(root, {"x":0, "y":100, "width": root.width, "height": root.height-200,
                                              "cmdText": cmd, "outputText": output, "durationText": qsTr("cost time: %1").arg(duration)});
     }
     ListView {

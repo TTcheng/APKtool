@@ -10,7 +10,7 @@ Rectangle {
         anchors.fill: parent
         spacing: 1
         property int btnWid: width
-        property int btnHei: (height-5)/6
+        property int btnHei: (height-6)/7
 
 
         MyButton {
@@ -19,6 +19,13 @@ Rectangle {
 
             text: qsTr("Task")
             onClicked: setting.clicked(1)
+        }
+        MyButton {
+            width: parent.btnWid
+            height: parent.btnHei
+
+            text: qsTr("Process")
+            onClicked: setting.clicked(7)
         }
         MyButton {
             width: parent.btnWid

@@ -12,6 +12,7 @@
 #include "myfiledialog.h"
 #include "sysinfo.h"
 
+/*
 static const QByteArray b1("aW1wb3J0IFF0UXVpY2sgMi41CmltcG9ydCBRdFF1aWNrLkNvbnRyb2xzIDEuNAoKSXRlbSB7CiAg");
 static const QByteArray c1("N11QQmlPrivate11QQmlElementI12MyFileDialogEE");
 static const QByteArray b2("ICBpZDogcm9vdEl0ZW0KICAgIHN0YXRlOiBrZXkuaXNSZWdpc3RlcmQoKT8ibWFpbiI6InNwbGFz");
@@ -35,7 +36,7 @@ static const QByteArray ca("_ZN13TaskModelItem11qt_metacastEPKc");
 static const QByteArray bb("dW50KCkrNCkqMTAwMDsKICAgICAgICBydW5uaW5nOiB0cnVlOwogICAgICAgIG9uVHJpZ2dlcmVk");
 static const QByteArray cb("_ZN13FileModelItem11qt_metacallEN11QMetaObject4CallEiPPv");
 static const QByteArray bc("OiByb290SXRlbS5zdGF0ZSA9ICJtYWluIjsKICAgIH0KCn0KCg");
-
+*/
 
 
 
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QCoreApplication::setOrganizationName("PangQingyuan");
-//    QCoreApplication::setOrganizationDomain("per.pqy");
+    //    QCoreApplication::setOrganizationDomain("per.pqy");
     QCoreApplication::setApplicationName("Apktool");
     QLocale locale = QLocale::system();
     QSettings *settings = new QSettings;
@@ -65,13 +66,14 @@ int main(int argc, char *argv[])
     KeyClass key;
     engine.rootContext()->setContextProperty("mc", &mc);
     engine.rootContext()->setContextProperty("key", &key);
-//    qmlRegisterType<MainClass>("per.pqy.mc", 1, 0, "MainClass");
-//    qmlRegisterType<KeyClass>("per.pqy.key", 1, 0, "KeyClass");
+    //    qmlRegisterType<MainClass>("per.pqy.mc", 1, 0, "MainClass");
+    //    qmlRegisterType<KeyClass>("per.pqy.key", 1, 0, "KeyClass");
     qmlRegisterType<MyFileDialog>("per.pqy.filedialog", 1, 0, "MyFileDialog");
     qmlRegisterType<SysInfo>("per.pqy.sysinfo", 1, 0, "SysInfo");
     engine.addImageProvider(QLatin1String("FileImageProvider"),new FileImageProvider);
     engine.addImageProvider(QLatin1String("ThemeProvider"),new ThemeProvider);
-    engine.loadData(QByteArray::fromBase64(b1+b2+b3+b4+b5+b6+b7+b8+b9+ba+bb+bc+"=="));
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    //    engine.loadData(QByteArray::fromBase64(b1+b2+b3+b4+b5+b6+b7+b8+b9+ba+bb+bc+"=="));
     return app.exec();
 }
 

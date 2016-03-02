@@ -120,7 +120,7 @@ Rectangle {
         }
         MyButton {
             id: button12
-            text: ("")
+            text: qsTr("")
             width: parent.btnWid
             height: parent.btnHei
  //           color: "#999999"

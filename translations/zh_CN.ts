@@ -179,105 +179,105 @@
         <translation>Apktool</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="228"/>
+        <location filename="../FilesList.qml" line="231"/>
         <source>Invalid length of your key!</source>
         <translation>注册码长度太短！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="254"/>
+        <location filename="../FilesList.qml" line="257"/>
         <source>Can not copy to same path!</source>
         <translation>不能复制到同一目录！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="263"/>
+        <location filename="../FilesList.qml" line="266"/>
         <source>Can not cut to same path!</source>
         <translation>不能剪切到同一目录！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="279"/>
-        <location filename="../FilesList.qml" line="285"/>
+        <location filename="../FilesList.qml" line="282"/>
+        <location filename="../FilesList.qml" line="288"/>
         <source>Added to task list!</source>
         <translation>已添加到任务队列！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="292"/>
+        <location filename="../FilesList.qml" line="295"/>
         <source>cost time: %1</source>
         <translation>耗时: %1</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="297"/>
+        <location filename="../FilesList.qml" line="300"/>
         <source>This page is showed because of register bug.
 %1</source>
         <translation>注册过程出现了一些问题，请联系作者。
 %1</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="317"/>
+        <location filename="../FilesList.qml" line="320"/>
         <source>No access permission!</source>
         <translation>无访问权限！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="321"/>
+        <location filename="../FilesList.qml" line="324"/>
         <source>Files has been deleted!</source>
         <translation>文件已删除！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="323"/>
+        <location filename="../FilesList.qml" line="326"/>
         <source>Files has been copied!</source>
         <translation>文件已复制！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="324"/>
+        <location filename="../FilesList.qml" line="327"/>
         <source>Files has been cut!</source>
         <translation>文件已剪切！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="325"/>
+        <location filename="../FilesList.qml" line="328"/>
         <source>File with same name exists!</source>
         <translation>已存在同名文件！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="328"/>
+        <location filename="../FilesList.qml" line="331"/>
         <source>Copy boot.oat file to current path first, please. </source>
         <translation>请先复制boot.oat到当前目录.</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="329"/>
+        <location filename="../FilesList.qml" line="332"/>
         <source>Unsupported operation.</source>
         <translation>不支持的操作。</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="335"/>
+        <location filename="../FilesList.qml" line="338"/>
         <source>Congratulations! You have registered this app!</source>
         <translation>恭喜！您已注册成功！</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="339"/>
+        <location filename="../FilesList.qml" line="342"/>
         <source>Oops! Your key is invalid! Check it, please.</source>
         <translation>非法注册码，请重新输入。</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="342"/>
+        <location filename="../FilesList.qml" line="345"/>
         <source>Verify timeout! Please try again.</source>
         <translation>验证超时，请重试注册，或者切换其他网络再注册。</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="657"/>
+        <location filename="../FilesList.qml" line="666"/>
         <source>Select All</source>
         <translation>全选</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="666"/>
+        <location filename="../FilesList.qml" line="675"/>
         <source>Reverse Selection</source>
         <translation>反选</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="674"/>
+        <location filename="../FilesList.qml" line="683"/>
         <source>Combine</source>
         <translation>合并apk/dex</translation>
     </message>
     <message>
-        <location filename="../FilesList.qml" line="683"/>
+        <location filename="../FilesList.qml" line="692"/>
         <source>Finish Selection</source>
         <translation>完成选择</translation>
     </message>
@@ -311,37 +311,47 @@
 <context>
     <name>Options</name>
     <message>
-        <location filename="../Options.qml" line="35"/>
+        <location filename="../Options.qml" line="36"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../Options.qml" line="52"/>
+        <location filename="../Options.qml" line="53"/>
         <source>show memory info</source>
         <translation>显示内存信息</translation>
     </message>
     <message>
-        <location filename="../Options.qml" line="69"/>
+        <location filename="../Options.qml" line="70"/>
         <source>show cpu info</source>
         <translation>显示cpu使用率</translation>
     </message>
     <message>
-        <location filename="../Options.qml" line="87"/>
+        <location filename="../Options.qml" line="89"/>
         <source>visible file items(7-25)</source>
-        <translation>可见文件数</translation>
+        <translation>可见文件数(7-25)</translation>
     </message>
     <message>
-        <location filename="../Options.qml" line="99"/>
+        <location filename="../Options.qml" line="102"/>
         <source>text color</source>
         <translation>字体颜色</translation>
     </message>
     <message>
-        <location filename="../Options.qml" line="113"/>
+        <location filename="../Options.qml" line="117"/>
+        <source>show kernel thread</source>
+        <translation>显示内核线程</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="129"/>
+        <source>Process Manager</source>
+        <translation>进程管理</translation>
+    </message>
+    <message>
+        <location filename="../Options.qml" line="139"/>
         <source>Back</source>
         <translation>返回</translation>
     </message>
     <message>
-        <location filename="../Options.qml" line="126"/>
+        <location filename="../Options.qml" line="152"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
@@ -357,6 +367,39 @@
         <location filename="../OutPut.qml" line="76"/>
         <source>OK</source>
         <translation>确定</translation>
+    </message>
+</context>
+<context>
+    <name>ProcList</name>
+    <message>
+        <location filename="../ProcList.qml" line="41"/>
+        <source>Process</source>
+        <translation>进程</translation>
+    </message>
+    <message>
+        <location filename="../ProcList.qml" line="91"/>
+        <source>memory</source>
+        <translation>内存占用</translation>
+    </message>
+    <message>
+        <location filename="../ProcList.qml" line="106"/>
+        <source>user</source>
+        <translation>用户</translation>
+    </message>
+    <message>
+        <location filename="../ProcList.qml" line="222"/>
+        <source>Refresh</source>
+        <translation>刷新</translation>
+    </message>
+    <message>
+        <location filename="../ProcList.qml" line="231"/>
+        <source>Send Signal</source>
+        <translation>发送信号</translation>
+    </message>
+    <message>
+        <location filename="../ProcList.qml" line="244"/>
+        <source>More Info</source>
+        <translation>更多信息</translation>
     </message>
 </context>
 <context>
@@ -485,28 +528,41 @@ key: %1</source>
     </message>
     <message>
         <location filename="../Settings.qml" line="27"/>
+        <source>Process</source>
+        <translation>进程管理</translation>
+    </message>
+    <message>
+        <location filename="../Settings.qml" line="34"/>
         <source>Register</source>
         <translation>注册</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="34"/>
+        <location filename="../Settings.qml" line="41"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="41"/>
+        <location filename="../Settings.qml" line="48"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="48"/>
+        <location filename="../Settings.qml" line="55"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../Settings.qml" line="57"/>
+        <location filename="../Settings.qml" line="64"/>
         <source>Quit</source>
         <translation>退出</translation>
+    </message>
+</context>
+<context>
+    <name>SignalList</name>
+    <message>
+        <location filename="../SignalList.qml" line="35"/>
+        <source>back</source>
+        <translation>返回</translation>
     </message>
 </context>
 <context>

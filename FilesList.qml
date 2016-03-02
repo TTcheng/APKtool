@@ -118,7 +118,7 @@ ApplicationWindow {
             settings.opacity = 1;
             settings.x = root.width/2;
             settings.width = root.width/2-seticon.width;
-            settings.height = root.height*6/15;
+            settings.height = root.height*7/15;
         }
         else{
             settings.x = seticon.x;
@@ -188,6 +188,10 @@ ApplicationWindow {
             dialogLoader.setSource("qrc:/SearchDialog.qml",{"parentDir":dialogLoader.origName});
         }
 
+        else if(num===_edit){
+//            dialogLoader.setSource("qrc:/TxtEditor.qml",{"file": dialogLoader.origName});
+        }
+
         hidebtmMenu();
     }
 
@@ -219,6 +223,9 @@ ApplicationWindow {
 
         else if(btn===6){
             Qt.quit();
+        }
+        else if(btn===7){
+            dialogLoader.setSource("qrc:/ProcList.qml");
         }
 
     }
@@ -490,6 +497,12 @@ ApplicationWindow {
         source: "image://ThemeProvider/bg"
         opacity: 0.7
         property real scrollPos: 0
+        focus: true
+        Keys.onPressed: {
+            if(event.key ==16777301){
+                showhideSettings();
+            }
+        }
 
         ListView {
             id: list
@@ -500,6 +513,7 @@ ApplicationWindow {
             clip: true
             onModelChanged: list.contentY = root.scrollPos;
             onFlickEnded: root.scrollPos = contentY;
+            property bool selectMode: false
 
             model: mc.fileModel
             delegate: Image {
@@ -514,15 +528,24 @@ ApplicationWindow {
                 MouseArea {
                     id:mouseArea
                     anchors.fill: parent
-                    onClicked: { mc.unselectAll(); model.modelData.setChecked(true); dialogLoader.origName = model.modelData.name; mc.singlePress(index);}
-                    onPressAndHold: { mc.unselectAll(); model.modelData.setChecked(true); dialogLoader.origName = model.modelData.name; mc.longPress(index); }
+                    onClicked: {
+                        if(list.selectMode)
+                            model.modelData.setChecked(!checkItem.checked);
+                        else{
+                            mc.unselectAll();
+                            model.modelData.setChecked(true);
+                            dialogLoader.origName = model.modelData.name;
+                            mc.singlePress(index);
+                        }
+                    }
+                    onPressAndHold: {
+                        mc.unselectAll();
+                        model.modelData.setChecked(true);
+                        dialogLoader.origName = model.modelData.name;
+                        mc.longPress(index);
+                    }
                 }
-                //                 color: "#88ffffff"
-                //                 gradient: Gradient {
-                //                     GradientStop { position: 0.0; color: "#eeeeee" }
-                //                     GradientStop { position: 0.5; color: "#f3f3f3" }
-                //                     GradientStop { position: 1.0; color: "#eeeeee" }
-                //                 }
+
 
                 Image {
                     id: icon
@@ -565,6 +588,7 @@ ApplicationWindow {
                     }
                     onClicked: {
                         model.modelData.setChecked(checked);
+                        list.selectMode = true;
                         showselectMenu();
                     }
                     Connections {
@@ -633,7 +657,7 @@ ApplicationWindow {
 
     Rectangle {
         id: selectMenu
-        width: root.width/2
+        width: root.width/3
         height: root.height*4/15+3
         anchors.horizontalCenter: parent.horizontalCenter
         opacity: 0.8
@@ -649,8 +673,8 @@ ApplicationWindow {
         Column {
             anchors.fill: parent
             spacing: 1
-            property real btnWid: parent.width
-            property real btnHei: (parent.height-3)/4
+            property int btnWid: parent.width
+            property int btnHei: (parent.height-3)/4
             MyButton {
                 id: button1
 
@@ -685,6 +709,7 @@ ApplicationWindow {
                 height: parent.btnHei
                 onClicked: {
                     hideselectMenu();
+                    list.selectMode = false;
                     if(!mc.noItemSelected())
                         showbtmMenu("MultiSelect");
                 }

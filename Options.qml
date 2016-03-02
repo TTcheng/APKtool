@@ -11,6 +11,7 @@ ScrollView {
     signal switchCpu(bool on);
     horizontalScrollBarPolicy: 0
     property bool memWid
+    property color txtColor: mc.colorValue("user/textColor")
 
 
     Image {
@@ -38,10 +39,10 @@ ScrollView {
                 ColumnLayout {
                     anchors.fill: parent
                     RowLayout {
-                        Label { text: "ROOT"; Layout.fillWidth: true }
+                        Label { text: "ROOT"; color: txtColor;Layout.fillWidth: true }
                         Switch {
                             id: rootSwitch;
-                            checked: mc.boolValue("user/root");
+                            checked: mc.hasRoot();
                             onClicked: {
                                 mc.setBoolValue("user/root", checked);
                                 mc.setShell(checked);
@@ -49,7 +50,7 @@ ScrollView {
                         }
                     }
                     RowLayout {
-                        Label { text: qsTr("show memory info"); Layout.fillWidth: true }
+                        Label { text: qsTr("show memory info"); color: txtColor;Layout.fillWidth: true }
 
                         Switch {
                             id: memSwitch;
@@ -67,6 +68,7 @@ ScrollView {
 
                         Label {
                             text: qsTr("show cpu info")
+                            color: txtColor
                             Layout.fillWidth: true
                         }
                         Switch {
@@ -85,6 +87,7 @@ ScrollView {
 
                         Label {
                             text: qsTr("visible file items(7-25)")
+                            color: txtColor
                             Layout.fillWidth: true
                         }
                         SpinBox { id: itemnum; value: mc.intValue("user/itemNum"); minimumValue: 7; maximumValue: 25; Layout.fillWidth: false }
@@ -97,11 +100,34 @@ ScrollView {
 
                         Label {
                             text: qsTr("text color")
+                            color: txtColor
                             Layout.fillWidth: true
                         }
-                        TextField { id: txtcolor; text: mc.colorValue("user/textColor"); Layout.fillWidth: false}
+                        TextField { id: txtcolor; text: txtColor; Layout.fillWidth: false}
                     }
                 }
+            }
+
+            GroupBox {
+                ColumnLayout {
+                    anchors.fill: parent
+                    RowLayout {
+                        Label {
+                            color: txtColor
+                            text: qsTr("show kernel thread")
+                            Layout.fillWidth: true
+                        }
+
+                        Switch {
+                            id: rootSwitch1
+                            checked: mc.boolValue("process/showKthread")
+                            onClicked: mc.setBoolValue("process/showKthread", checked)
+                        }
+                    }
+                }
+                Layout.fillWidth: true
+                title: qsTr("Process Manager")
+                Layout.columnSpan: grid.columns
             }
 
             RowLayout {
@@ -130,6 +156,7 @@ ScrollView {
                     }
                 }
             }
+
         }
     }
 }
