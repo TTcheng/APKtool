@@ -10,3 +10,5 @@ How to build:
 This is a Qt5 project for android devices. I suggest you use qt-creator to build. Please build with newest Qt version(current is 3.6.0).
 
 
+translations:
+Any translations is welcomed. Please send me a pull request with your translation file.
