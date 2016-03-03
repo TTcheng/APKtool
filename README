@@ -1,0 +1,12 @@
+Author: Mr Pang (pangqingyuan@smail.nju.edu.cn pangqingyuan1991@gmail.com)
+
+requirement:
+ qt-creator 3.5 and above.
+ android sdk
+ android ndk
+ jdk 7
+ 
+How to build:
+This is a Qt5 project for android devices. I suggest you use qt-creator to build. Please build with newest Qt version(current is 3.6.0).
+
+

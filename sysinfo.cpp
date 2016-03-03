@@ -20,11 +20,12 @@ void SysInfo::getInfo()
 SysInfo::~SysInfo()
 {
     mi.terminate();
+    mi.wait();
     ci.terminate();
+    ci.wait();
 }
 
-/*
-void SysInfo::memoryInfo()
+void MemInfo::run()
 {
     std::string tmp;
     std::ifstream file("/proc/meminfo");
@@ -49,10 +50,9 @@ void SysInfo::memoryInfo()
     file.close();
    umem+=tmem;
    emit meminfo(QString("%1M").arg(tmem/1024), QString("%1M").arg(umem/1024), (qreal)umem/tmem);
-
 }
 
-void SysInfo::cpuInfo()
+void CpuInfo::run()
 {
     long cpu_total = 0, cpu_idle = 0;
     QString info, prev, current;
@@ -82,17 +82,24 @@ void SysInfo::cpuInfo()
            QStringList splitStr2 = tmp2.split(QRegExp("\\s+"));
            if(splitStr1.count()<10||splitStr2.count()<10)
                continue;
-           for(int i =1; i<10; i++){
-                cpu_total += splitStr2[i].toLong() - splitStr1[i].toLong();
-                if(i == 4)
-                    cpu_idle = splitStr2[i].toLong() - splitStr1[i].toLong();
+           file.setFileName("/sys/bus/cpu/devices/"+splitStr1[0]+"/online");
+           if(file.open(QFile::ReadOnly|QFile::Text)){
+               if(file.readAll().startsWith('0')){
+                   file.close();
+                   continue;
+               }
+               file.close();
            }
-
+           for(int i =1; i<8; i++){
+                cpu_total += splitStr2[i].toLong() - splitStr1[i].toLong();
+                if(i == 4 || i == 5)
+                    cpu_idle += splitStr2[i].toLong() - splitStr1[i].toLong();
+           }
+           if(cpu_total==0)
+               return;
            info += splitStr1[0] + ": " + QString::number((cpu_total - cpu_idle) * 100 / cpu_total) + "%\n";
        }
 
        emit cpuinfo(info);
    }
-
 }
-*/
