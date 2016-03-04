@@ -12,3 +12,7 @@ This is a Qt5 project for android devices. I suggest you use qt-creator to build
 
 translations:
 Any translations is welcomed. Please send me a pull request with your translation file.
+
+prebuilt jdk and aapt:
+It needs some cross compiling skills to do this and is too complicated to be explained clearly in a few words. You don't need to compile it again, in general.
+I will give a detail if having more free time.
