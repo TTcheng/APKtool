@@ -4,13 +4,14 @@ import QtQuick 2.0
 Rectangle {
     id: setting
     color: "grey"
+    border.width: 0
     signal clicked(int btn)
     Column {
         id: column1
         anchors.fill: parent
-        spacing: 1
+        spacing: 0
         property int btnWid: width
-        property int btnHei: (height-6)/7
+        property int btnHei: height/7
 
 
         MyButton {

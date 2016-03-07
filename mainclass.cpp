@@ -110,7 +110,7 @@ void MainClass::refreshCurrentPath()
 {
     //    if(listProc.state()==QProcess::Running)
     //       listProc.kill();
-    listProc.start(_shell, QStringList()<<"-c"<<"ls -al "+_currentPath);
+    listProc.start(_shell, QStringList()<<"-c"<<"toolbox ls -al "+_currentPath);
     listProc.waitForFinished();
     /*
     if(listProc.exitCode()==2){

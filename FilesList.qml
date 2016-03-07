@@ -658,7 +658,8 @@ ApplicationWindow {
     Rectangle {
         id: selectMenu
         width: root.width/3
-        height: root.height*4/15+3
+        height: root.height*4/15
+        border.width: 0
         anchors.horizontalCenter: parent.horizontalCenter
         opacity: 0.8
         y: -height
@@ -672,9 +673,9 @@ ApplicationWindow {
         }
         Column {
             anchors.fill: parent
-            spacing: 1
+            spacing: 0
             property int btnWid: parent.width
-            property int btnHei: (parent.height-3)/4
+            property int btnHei: parent.height/4
             MyButton {
                 id: button1
 
