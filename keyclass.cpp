@@ -37,9 +37,7 @@ KeyClass::~KeyClass()
 }
 
 bool KeyClass::isRegisterd()
-{
-    return true;
-    /*
+{  
     QFileInfo finfo(_keyfile);
     if(!finfo.exists() || finfo.owner()!=getlogin())
         return false;
@@ -62,8 +60,7 @@ bool KeyClass::isRegisterd()
     struct stat st;
     stat(_keyfile, &st);
     quint64 validkey = st.st_mtime;
-    return key==validkey;
-    */
+    return key==validkey;  
 }
 
 
