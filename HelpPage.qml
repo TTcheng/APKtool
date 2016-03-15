@@ -37,11 +37,8 @@ Rectangle {
 
             width: flickable1.width
             height: flickable1.height
-            text: "
+            text: "https://github.com/dongfangxunlei/apktool
         本版本采用Qt库重写，风格上与之前的版本完全不一样，因此写点说明给新用户参考。
-关于注册：
-	从6.2开始，本程序不再收费。已购买注册码的用户可以通过支付宝信息申请退款，不申请的就当做支持作者。
-
 反编译apk/jar：
 	点击apk文件，选择反编译即可。注意jar指的是安卓系统的jar库,里面含有classes.dex文件，不是一般的jar程序。
 反编译dex/odex：
