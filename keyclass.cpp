@@ -181,9 +181,9 @@ int KeyClass::runCount()
 {
     QSettings settings;
     if(settings.isWritable())
-        return settings.value("user/runCount", 15).toUInt();
+        return settings.value("user/runCount", 5).toUInt();
     else
-        return 15;
+        return 5;
 }
 
 QString KeyClass::genBugMsg()

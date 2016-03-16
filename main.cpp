@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
     QSettings *settings = new QSettings;
     int count = settings->value("user/runCount", -1).toInt();
     count++;
-    if(count<0||count>15)
-        count=15;
+    if(count<0||count>5)
+        count=5;
     settings->setValue("user/runCount", count);
     delete settings;
 
