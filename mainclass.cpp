@@ -347,12 +347,12 @@ int MainClass::taskNum()
 
 void MainClass::genKey()
 {
-/*
+
     _key = new keyThread;
     connect(_key, SIGNAL(gotKey(QString)), this, SIGNAL(gotKey(QString)));
     connect(_key, SIGNAL(finished()), this, SLOT(deleteKey()));
     _key->start();
-*/
+
 }
 
 void MainClass::deleteKey()

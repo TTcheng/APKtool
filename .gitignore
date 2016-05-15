@@ -10,7 +10,6 @@
 *.obj
 *.orig
 *.rej
-*.so.*
 *_pch.h.cpp
 *_resource.rc
 .#*
