@@ -25,7 +25,7 @@ Rectangle {
         anchors.fill: parent
         z: 1
         columns: 3
-        columnSpacing: 2
+        columnSpacing: 1
         rowSpacing: 1
         property real btnWid: width/3
         property real btnHei: height/5
